@@ -1,0 +1,218 @@
+
+.sidebar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 55px;
+  // bottom: 95vh;
+  // height: 570px;
+  height: 88vh;
+  overflow: hidden;
+  // width: 250px;
+  // margin-right: 1rem;
+
+  &.card {
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1rem;
+      padding-top: 1.5rem;
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #FFF;
+      border-bottom: 1px solid #EEE;
+
+      .profile {
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: .5rem;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .username {
+        // font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 0;
+        color: #1e2022;
+      }
+      .email {
+        color: #677788;
+      }
+    }
+
+    .content {
+      height: calc(100% - 130px);
+      overflow-y: auto;
+      margin-top: 130px;
+      padding: .5rem 0;
+
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      .nav-header, .nav-link {
+        padding: .25rem 1rem;
+        margin: .1rem 0;
+      }
+
+      .nav-header {
+        font-weight: 500;
+        color: #1e2022;
+        margin-top: .5rem;
+        margin-left: 5px;
+        margin-bottom: .5rem;
+      }
+    }
+
+    .foot {
+      padding: .5rem 0;
+      padding-top: 0;
+      border-top: 1px solid #CCC;
+    }
+
+    .nav-item {
+
+      .nav-link {
+        color: #21325b;
+        border-left: 3px solid transparent;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &.has-links {
+          position: relative;
+
+          &::after {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: .75rem;
+            content: '+';
+            font-weight: 700;
+          }
+
+          &.open {
+            &::after {
+              content: '-';
+            }
+          }
+        }
+
+        &.active, &:hover, &.open {
+          color: #1366ff;
+          border-left: 3px solid #1366ff;
+          background-color: rgba(#1366ff, .05);
+        }
+
+        i {
+          font-size: 20px;
+          margin-right: .75rem;
+        }
+      }
+
+      .nav-links {
+        padding-left: 1.3rem;
+        height: 0;
+        overflow: hidden;
+        transition: height .3s ease-in;
+        transition: height .0s ease-out;
+        border-left: 1px solid #1366ff;
+        background-color: rgba(#1366ff, .01);
+      }
+
+      &:has(>.nav-links .nav-link.active) {
+        .has-links {
+          &::after {
+            content: '-';
+          }
+
+          color: #1366ff;
+          border-left: 3px solid #1366ff;
+          background-color: rgba(#1366ff, .05);
+        }
+
+        .nav-links {
+          height: unset !important;
+          overflow: unset !important;
+        }
+      }
+
+      &.opening {
+        .has-links {
+          &::after {
+            content: '-';
+          }
+
+          color: #1366ff;
+          border-left: 3px solid #1366ff;
+          background-color: rgba(#1366ff, .05);
+        }
+
+        .nav-links {
+          height: unset !important;
+          overflow: unset !important;
+        }
+      }
+    }
+  }
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 766px) {
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 55px;
+    right: 0px;
+    bottom: 0px;
+    left: 250px;
+    z-index: 2;
+    background-color: rgba(#1366ff, .1);
+    transition: all .2s ease-in-out;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 55px;
+    bottom: 0px;
+    left: -260px;
+    transition: all .1s ease-in-out;
+    z-index: 20000;
+    height: unset;
+    border-radius: 0;
+    width: 250px;
+
+    .header {
+      padding: .5rem;
+
+      .profile {
+        height: 50px;
+        width: 50px;
+      }
+    }
+
+    &.open {
+      left: 0;
+
+      & ~ .overlay {
+        display: unset;
+      }
+    }
+  }
+}

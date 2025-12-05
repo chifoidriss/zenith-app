@@ -1,0 +1,60 @@
+<app-auth-layout name="auth" title="Créer un compte">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <mdb-form-control class="mb-4">
+          <input mdbInput type="text" class="form-control form-control-lg" id="first_name" formControlName="first_name" placeholder="Prénom">
+          <label mdbLabel class="form-label" for="first_name">Prénom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control class="mb-4">
+          <input mdbInput type="text" class="form-control form-control-lg" id="last_name" formControlName="last_name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="last_name">Nom</label>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <mdb-form-control class="mb-4">
+      <input mdbInput type="email" class="form-control form-control-lg" id="email" formControlName="email" placeholder="name@example.com">
+      <label mdbLabel class="form-label" for="email">Adresse email</label>
+    </mdb-form-control>
+    <mdb-form-control class="mb-4">
+      <input mdbInput type="tel" class="form-control form-control-lg" id="phone" formControlName="phone" placeholder="name@example.com">
+      <label mdbLabel class="form-label" for="phone">Numéro de téléphone</label>
+    </mdb-form-control>
+
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <mdb-form-control class="mb-4">
+          <input mdbInput type="password" class="form-control form-control-lg" id="password" formControlName="password" placeholder="Mot de passe">
+          <label mdbLabel class="form-label" for="password">Mot de passe</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-sm-6 col-12">
+        <mdb-form-control class="mb-4">
+          <input mdbInput type="password" class="form-control form-control-lg" id="password_confirmation" formControlName="password_confirmation" placeholder="Confirmation">
+          <label mdbLabel class="form-label" for="password_confirmation">Confirmation</label>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <div class="checkbox mb-3">
+      <input mdbCheckbox class="form-check-input" type="checkbox" value="1" id="accept" formControlName="accept"/>
+      <label class="form-check-label" for="accept">
+        J'accepte les conditions générales d'utilisations
+      </label>
+    </div>
+
+    <div class="text-center text-lg-start mt-2 pt-2">
+      <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="form.invalid || isLoad">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="isLoad"></span>
+        Créer mon compte
+      </button>
+      <p class="small fw-bold mt-3 pt-1 mb-0 text-center">
+          Vous avez déjà un compte ?
+          <a routerLink="/auth/login" class="link-danger">Connectez-vous</a> ici.
+      </p>
+    </div>
+  </form>
+</app-auth-layout>

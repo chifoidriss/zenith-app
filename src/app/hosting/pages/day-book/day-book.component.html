@@ -1,0 +1,67 @@
+<app-master title="Main courante">
+  <div header class="d-flex justify-content-between">
+    <div class="d-flex">
+      <div class="me-2">
+        <mdb-form-control>
+          <input mdbInput type="month" class="form-control form-control-sm" [(ngModel)]="params.date">
+          <label mdbLabel class="form-label">Choisir un mois</label>
+        </mdb-form-control>
+      </div>
+      <div class="text-end-">
+        <button class="btn btn-sm btn-primary" (click)="ngOnInit()">Afficher</button>
+      </div>
+
+      <div class="ms-2">
+        <button class="btn btn-sm btn-warning text-nowrap" [disabled]="data.data.length == 0" (click)="export()">
+          <i class="mdi mdi-table-arrow-right" style="font-size: 14px; line-height: 14px;"></i>
+          Exporter
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="bg-white" *ngIf="!loading">
+    <div class="table-responsive">
+      <table id="data" class="table fixed-first-column table-sm mb-0 table-bordered">
+        <thead>
+          <tr class="table-primary">
+            <!-- <th scope="col">Date</th> -->
+            <th scope="col">Chambre</th>
+            <th scope="col">Type</th>
+            <th scope="col">Client</th>
+            <th scope="col">Durée</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Total</th>
+            <th scope="col">Reçu</th>
+            <th scope="col" *ngFor="let month of months">{{ month.name }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-nowrap" *ngFor="let item of data.data; index as i">
+            <!-- <th>{{ item.room.invoice.start_date | locale }}</th> -->
+            <th class="fw-bold pointer" (click)="alert.detailArticle(item.id)" [ngClass]="{'text-success': item.current_room}">
+              {{ item.name }}
+            </th>
+            <td>{{ item.category?.name }}</td>
+            <td>{{ item.current_room?.invoice?.partner?.name }}</td>
+            <td>
+              {{ item.current_room?.qty }}
+              {{ item.current_room?.unit.name }}
+            </td>
+            <td>{{ item.current_room? (item.current_room.subtotal | price) :'' }}</td>
+            <th>{{ item.current_room? (item.current_room.invoice?.total | price):'' }}</th>
+            <td>{{ item.current_room? (item.current_room.invoice?.paid_amount | price):'' }}</td>
+            <td *ngFor="let month of months" [ngClass]="{'table-warning': plane(item, month.date)}">
+              <span style="color: transparent;" *ngIf="plane(item, month.date)">OK</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

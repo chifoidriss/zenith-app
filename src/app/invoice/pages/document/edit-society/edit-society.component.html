@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>
+  Modifier les informations de la société
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="name">Nom de la société</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Numéro de téléphone">
+          <label mdbLabel class="form-label" for="phone">Numéro de téléphone</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="address_name" formControlName="address_name" placeholder="Siège social">
+          <label mdbLabel class="form-label" for="address_name">Adresse ou Siège social</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="email" class="form-control" id="email" formControlName="email" placeholder="Adresse email">
+          <label mdbLabel class="form-label" for="email">Adresse email</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="registre" formControlName="registre" placeholder="Numéro du contribuable">
+          <label mdbLabel class="form-label" for="registre">Numéro du contribuable</label>
+          <!-- <label mdbLabel class="form-label" for="registre">Registre de commerce</label> -->
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="uid" formControlName="uid" placeholder="Numéro d'identifiant unique">
+          <label mdbLabel class="form-label" for="uid">Numéro d'identifiant unique</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="url" class="form-control" id="site" formControlName="site" placeholder="Site web">
+          <label mdbLabel class="form-label" for="site">Site web</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

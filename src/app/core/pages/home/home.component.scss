@@ -1,0 +1,21 @@
+.hero {
+  // background-image: url(/assets/img/corner-3.png);
+  // background-image: url(/assets/svg/help-center.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  // background-attachment: fixed;
+  padding: 2rem 0;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 4rem;
+  margin-bottom: 0;
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+}

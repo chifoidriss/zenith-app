@@ -1,0 +1,74 @@
+<h2 mat-dialog-title *ngIf="payment">
+  Info paiement <b>{{ payment?.reference }}</b>
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="mb-3">
+      <div class="mb-2">
+        <b class="me-2">Montant:</b>
+        <span>{{ payment.amount | price }}</span>
+      </div>
+      <div class="mb-2">
+        <b class="me-2">Référence:</b>
+        <span>{{ payment.reference }}</span>
+      </div>
+      <div class="mb-2">
+        <b class="me-2">Date:</b>
+        <span>{{ payment.payment_date | locale }}</span>
+      </div>
+      <div class="mb-2">
+        <b class="me-2">Mode de paiement:</b>
+        <span>{{ payment.payment_method?.name }}</span>
+      </div>
+      <div class="mb-2">
+        <b class="me-2">Responsable:</b>
+        <span>{{ payment.partner?.full_name }}</span>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table id="invoices" class="table table-sm border- mb-0-">
+        <thead class="table-primary">
+          <tr>
+            <th width="10px">Référence</th>
+            <!-- <th class="text-capitalize">Partenaire</th> -->
+            <th>Date</th>
+            <th>Échéance</th>
+            <th>Total</th>
+            <th>Reste</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a (click)="detailInvoice(payment.invoice.id)" class="pointer fw-bold">
+                {{ payment.invoice.reference }}
+              </a>
+            </td>
+            <!-- <td>{{ payment.invoice.partner?.full_name }}</td> -->
+            <td>{{ payment.invoice.billing_date | locale }}</td>
+            <td>{{ payment.invoice.due_date | locale }}</td>
+            <td>{{ payment.invoice.total | price }}</td>
+            <td>{{ payment.invoice.due_amount | price }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+<mat-dialog-actions *ngIf="payment">
+  <!-- <button mat-raised-button color="accent" class="me-2" (click)="print()">
+    <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+    Imprimer
+  </button> -->
+
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

@@ -1,0 +1,45 @@
+<section class="auth">
+  <div class="content">
+    <div class="auth-bg">
+      <!-- Title -->
+      <div class="text-center">
+        <h2 class="fw-bold">
+          Bienvenue sur {{ APP_NAME }} la plus première application de gestion complète d'hôtel.
+        </h2>
+        <!-- <p class="mb-0 fw-light">
+          Avez-vous quelque chose de nouveau à gérer aujourd'hui ?
+        </p> -->
+      </div>
+
+      <img src="assets/img/metrics-pana.svg" class="w-75 mt-3">
+
+      <!-- Info -->
+      <div class="d-sm-flex mt-3 align-items-center justify-content-center">
+        <p class="mb-0 h6 fw-light ms-0 ms-sm-3">Rejoignez plus de 120 utilisateurs, partout en Afrique.</p>
+      </div>
+    </div>
+
+    <div class="auth-form">
+      <div class="w-100">
+        <div class="text-center">
+          <!-- Title -->
+          <img [src]="auth.user?.avatar" alt="" class="rounded-circle" height="80px" width="80px" *ngIf="auth.user">
+          <span class="mb-0 fs-1-" style="font-size: 50px;" *ngIf="!auth.user">👋</span>
+          <h1 class="fs-3" *ngIf="auth.user">{{ auth.user?.name }}</h1>
+          <h1 class="fs-3" *ngIf="!auth.user">{{ title }} sur {{ APP_NAME }}!</h1>
+          <p class="lead- mb-4">Connecter-vous à votre espace pour commencer à travailler.</p>
+        </div>
+
+        <ng-content></ng-content>
+
+        <!-- <div class="api-url">
+          <button (click)="changeApiInfo()" [ngClass]="{'btn-outline-success': API_NAME, 'btn-outline-danger': !API_NAME}" class="btn btn-sm border-0 rounded-0 fw-bold">
+            {{ API_NAME || 'URL du serveur ici' }}
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</section>

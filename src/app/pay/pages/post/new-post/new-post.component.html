@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un poste
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <ng-select appearance="outline" placeholder="Département" formControlName="department_id">
+          <ng-option *ngFor="let item of departments" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Titre du poste">
+          <label mdbLabel class="form-label" for="name">Titre du poste</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="description" formControlName="description" placeholder="Description">
+          <label mdbLabel class="form-label" for="description">Description</label>
+        </mdb-form-control>
+      </div>
+      <!-- <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="number_employees_expected" formControlName="number_employees_expected" placeholder="Nombre maximum d'employés">
+          <label mdbLabel class="form-label" for="number_employees_expected">Nombre maximum d'employés</label>
+        </mdb-form-control>
+      </div> -->
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

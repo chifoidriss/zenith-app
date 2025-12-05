@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} une catégorie
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+      <label mdbLabel class="form-label" for="name">Nom</label>
+    </mdb-form-control>
+    <div class="form-group">
+      <label class="form-label">Catégorie mère</label>
+      <select class="form-control" formControlName="parent_id">
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.full_name }}
+        </option>
+      </select>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

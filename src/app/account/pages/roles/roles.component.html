@@ -1,0 +1,43 @@
+<app-master title="Roles">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <a class="btn btn-sm btn-primary" (click)="addItem()">Ajouter</a>
+      <a class="btn btn-sm btn-info ms-2" [routerLink]="'/account/users'">Utilisateurs</a>
+    </div>
+    <div class="">
+      <input type="search" class="form-control form-control-sm" placeholder="Rechercher...">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table fixed-first-column table-sm table-striped border mb-0">
+      <thead class="table-primary">
+        <tr>
+          <th width="5px">#</th>
+          <th>Nom</th>
+          <th>Permissions</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.data; index as i">
+          <th>{{ data.from + i }}</th>
+          <td>{{ item.display_name }}</td>
+          <td>
+            {{ item.permissions_count }}
+          </td>
+          <td class="text-end">
+            <span class="pointer text-primary" (click)="editItem(i, item)">
+              <i class="mdi mdi-pencil-box-outline"></i>
+            </span>
+            <span class="pointer text-danger ms-2" (click)="removeItem(i, item)">
+              <i class="mdi mdi-trash-can-outline"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+</app-master>

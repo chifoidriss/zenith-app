@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un congé
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <ng-select (search)="filterPartners($event)" appearance="outline" placeholder="Employé" formControlName="partner_id">
+          <ng-option *ngFor="let item of employees" [value]="item.id">
+            {{ item.full_name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <ng-select appearance="outline" placeholder="Type de congé" formControlName="leaving_type_id">
+          <ng-option *ngFor="let item of leaveTypes" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="observation" formControlName="observation" placeholder="Observation">
+          <label mdbLabel class="form-label" for="observation">Observation</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-6">
+        <mdb-form-control>
+          <input mdbInput type="date" class="form-control" id="start_date" formControlName="start_date">
+          <label mdbLabel class="form-label" for="start_date">Date départ</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-6">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="longtime" formControlName="longtime" placeholder="Durée">
+          <label mdbLabel class="form-label" for="longtime">Nombre de jours</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mat-checkbox formControlName="payed" color="primary" value="1">
+          {{ form.get('payed')?.value == '1'?'':'Non' }}
+          Payé
+        </mat-checkbox>
+      </div>
+      <div class="col-md-6 col-12" *ngIf="form.get('payed')?.value == '1'">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="amount" formControlName="amount" placeholder="Montant">
+          <label mdbLabel class="form-label" for="amount">Montant</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || onload">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onload"></span>
+    Enregistrer
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

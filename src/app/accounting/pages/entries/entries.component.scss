@@ -1,0 +1,31 @@
+.table {
+  th, td {
+    padding: .5rem .25rem;
+    white-space: nowrap;
+  }
+}
+
+.empty-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 300px;
+}
+
+.pagination-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+.card {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}

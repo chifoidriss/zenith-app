@@ -1,0 +1,177 @@
+<h2 mat-dialog-title *ngIf="invoice">
+  Info facture <b>{{ invoice?.reference }}</b>
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="row g-3">
+      <div class="col-sm col-12">
+        <h6 class="fw-bold">Facturé à:</h6>
+        <p>
+          {{ invoice.partner.full_name }} <br>
+          {{ invoice.partner.phone }} <br>
+          {{ invoice.partner.email }}
+        </p>
+      </div>
+      <div class="col-sm-auto col-12">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <th class="fw-bold">Date de facturation:</th>
+              <td width="100%">{{ invoice.billing_date | locale }}</td>
+            </tr>
+            <tr *ngIf="invoice.source != 'OTHER'">
+              <th class="fw-bold">Date d'échéance:</th>
+              <td width="100%">{{ invoice.due_date | locale }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- <h6 class="border-bottom mb-0 mt-3-">
+      Lignes de facture
+    </h6> -->
+
+    <div class="" *ngIf="invoice.source != 'OTHER'">
+      <div class="table-responsive">
+        <table class="table border- table-striped table-hover">
+          <thead class="table-primary position-sticky top-sticky">
+            <tr>
+              <th>
+                {{ invoice.source == 'HOSTING'?'Chambre':'Description' }}
+              </th>
+              <th>
+                {{ invoice.source == 'HOSTING'?'Durée':'Qté' }}
+              </th>
+              <th *ngIf="invoice.source == 'HOSTING'">
+                Date d'arrivée
+              </th>
+              <th *ngIf="invoice.source == 'HOSTING'">
+                Date de sortie
+              </th>
+              <th class="text-end">Prix</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of invoice.items; index as i">
+              <td>
+                <b class="fw-bold pointer" (click)="alert.detailArticle(item.article.id)">
+                  {{ item.label }}
+                </b>
+              </td>
+              <td>
+                {{ item.qty }}
+                {{ item.unit.name }}
+              </td>
+              <td *ngIf="invoice.source == 'HOSTING'">
+                {{ item.start_date | locale }}
+              </td>
+              <td *ngIf="invoice.source == 'HOSTING'">
+                {{ item.end_date | locale }}
+              </td>
+              <td class="text-end">{{ item.price | price }}</td>
+              <td class="text-end">{{ item.subtotal | price }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row g-3">
+        <div class="col">
+          <h6 class="mt-2">Details</h6>
+          <p>
+            <span class="badge badge-secondary me-2" *ngFor="let u of invoice?.unit">
+              {{ u.total }} <b>{{ u.unit }}</b>
+            </span>
+          </p>
+        </div>
+        <div class="col-auto">
+          <table class="table border-top table-borderless mb-0">
+            <tbody>
+              <tr *ngIf="invoice.source == 'HOSTING'">
+                <td class="w-100 text-end pe-4">
+                  Total HT :
+                </td>
+                <td>
+                  <b class="fw-bold mb-0">{{ invoice.subtotal | price }}</b>
+                </td>
+              </tr>
+              <tr *ngIf="invoice.source == 'HOSTING'">
+                <td class="w-100 text-end pe-4">
+                  Taxes de séjour :
+                </td>
+                <td>
+                  <b class="fw-bold mb-0">{{ (invoice.total - invoice.subtotal) | price }}</b>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-100 text-end pe-4">
+                  Total
+                  <span *ngIf="invoice.source == 'HOSTING'">TTC</span>
+                  <span *ngIf="invoice?.status && invoice?.due_amount > 0">à payer</span> :
+                </td>
+                <td>
+                  <b class="fw-bold mb-0">{{ invoice.total | price }}</b>
+                </td>
+              </tr>
+              <tr *ngFor="let item of invoice.payments">
+                <td class="w-100 text-end pe-4">
+                  <a class="pointer" role="button" (click)="detailPayment(item.id)">
+                    <i class="mdi mdi-information-variant-circle" style="font-size: 20px; line-height: 20px;"></i>
+                  </a>
+                  Payé le <i class="text-italic">{{ item.payment_date | locale }}</i>
+                </td>
+                <td>{{ item.amount | price }}</td>
+              </tr>
+              <tr *ngIf="invoice?.status && invoice?.due_amount > 0">
+                <td class="w-100 text-end pe-4">Montant restant:</td>
+                <td>
+                  <b class="fw-bold mb-0">{{ invoice.due_amount | price }}</b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="" *ngIf="invoice.source == 'OTHER'">
+      <h5>Pièce comptable</h5>
+      <a class="btn btn-outline-primary" [href]="invoice.document_url" target="_blank" download="download">Télécharger la pièce</a>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+<mat-dialog-actions *ngIf="invoice">
+  <button mat-raised-button color="accent" (click)="print()">
+    <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+    Imprimer
+  </button>
+  <!-- <button mat-raised-button color="primary" (click)="validate()" *ngIf="!invoice?.status">
+    <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+    Valider
+  </button> -->
+  <!-- <button mat-raised-button color="primary" (click)="addPayment()" *ngIf="invoice?.status && invoice?.due_amount > 0">
+    <i class="mdi mdi-credit-card-plus-outline" style="font-size: 14px; line-height: 14px;"></i>
+    Payer
+  </button> -->
+
+  <!-- <button mat-button color="primary" [disabled]="onDuplicate" (click)="duplicateInvoice()">
+    <i class="mdi mdi-text-box-multiple-outline" style="font-size: 14px; line-height: 14px;"></i>
+    Dupliquer
+  </button> -->
+  <!-- <button mat-button color="primary" [disabled]="onRefund" (click)="duplicateInvoice(true)">
+    <i class="mdi mdi-receipt-text-arrow-left" style="font-size: 14px; line-height: 14px;"></i>
+    Avoir
+  </button> -->
+
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

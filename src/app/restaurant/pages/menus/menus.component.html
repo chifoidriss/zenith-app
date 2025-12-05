@@ -1,0 +1,49 @@
+<app-master title="Menus">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <!-- <a class="btn btn-sm btn-primary" routerLink="/restaurant/orders">Commander</a> -->
+    </div>
+    <div class="">
+      <input type="search" class="form-control form-control-sm" placeholder="Rechercher...">
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive bg-white">
+      <table class="table fixed-first-column table-sm table-striped border mb-0" id="data">
+        <thead>
+          <tr class="table-primary">
+            <th width="5px">#</th>
+            <th width="10px">Référence</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Catégorie</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Unité</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let item of data.data; index as i">
+            <th>{{ data.from + i }}</th>
+            <td>
+              <b class="fw-bold pointer" (click)="alert.detailArticle(item.id)">
+                {{ item.reference }}
+              </b>
+            </td>
+            <th>
+              <b class="fw-bold pointer" (click)="alert.detailArticle(item.id)">
+                {{ item.name }}
+              </b>
+            </th>
+            <td>{{ item.category?.name }}</td>
+            <td>{{ item.price | price }}</td>
+            <td>{{ item.sale_unit?.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

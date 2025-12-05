@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} une taxe
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <mat-radio-group formControlName="type" color="primary">
+          <mat-radio-button value="IN">Taxes facturées sur ventes</mat-radio-button>
+          <mat-radio-button value="OUT">Taxes récupérées sur achats</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="name">Nom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <!-- <label for="">Calcul de prix</label> <br> -->
+        <mat-radio-group formControlName="calcul" color="primary">
+          <mat-radio-button value="PERCENT">Pourcentage</mat-radio-button>
+          <mat-radio-button value="FIXED">Montant fixe</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="value" formControlName="value" placeholder="{{ form.get('calcul')?.value == 'PERCENT'?'19.25':'1000' }}">
+          <label mdbLabel class="form-label" for="value">{{ form.get('calcul')?.value == 'PERCENT'?'Pourcentage':'Montant' }}</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mat-checkbox formControlName="status" color="primary" value="1">Active</mat-checkbox>
+      </div>
+    </div>
+
+    <mdb-tabs>
+      <mdb-tab title="Comptabilité">
+        <div class="mb-3">
+          <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte par défaut" formControlName="chart_account_id">
+            <ng-option *ngFor="let item of accounts" [value]="item.id">
+              {{ item.account }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </mdb-tab>
+    </mdb-tabs>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

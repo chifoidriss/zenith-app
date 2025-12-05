@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>
+  Informations du compte
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label class="form-label">Sexe</label>
+      <div class="d-flex pt-2">
+        <div class="form-check me-3">
+          <input mdbRadio type="radio" id="genre-m" class="form-check-input" name="genre" value="M" [checked]="form.get('genre')?.value == 'M'" formControlName="genre"/>
+          <label class="form-check-label" for="genre-m">Homme</label>
+        </div>
+        <div class="form-check">
+          <input mdbRadio type="radio" id="genre-f" class="form-check-input" name="genre" value="F" [checked]="form.get('genre')?.value == 'F'" formControlName="genre"/>
+          <label class="form-check-label" for="genre-f">Femme</label>
+        </div>
+      </div>
+    </div>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="date" class="form-control" id="birthday" formControlName="birthday" placeholder="Date de naissance">
+      <label mdbLabel class="form-label" for="birthday">Date de naissance</label>
+    </mdb-form-control>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="country_id" class="form-label">Pays</label>
+          <select class="form-select" formControlName="country_id" id="country_id" #countrySelect (change)="getRegionByCountry(countrySelect.value)">
+            <option value="">Select</option>
+            <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label for="region_id" class="form-label">Région/Province/État</label>
+          <select class="form-select" formControlName="region_id" id="region_id">
+            <option value="">Select</option>
+            <option *ngFor="let region of regions" [value]="region.id">{{ region.name }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="city" formControlName="city" placeholder="ex. Douala">
+      <label mdbLabel class="form-label" for="city">Ville</label>
+    </mdb-form-control>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

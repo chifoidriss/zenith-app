@@ -1,0 +1,118 @@
+<app-master [title]="(id ? 'Modifier':'Ajouter')+ ' un contrat'">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button class="btn btn-sm btn-primary" [disabled]="form.invalid || onLoad" (click)="save()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onLoad"></span>
+        Enregistrer
+      </button>
+      <button class="btn btn-sm btn-outline-danger ms-2" navBack>Retour</button>
+    </div>
+    <div class=""></div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="card mb-4" *ngIf="!loading">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <div class="col-12">
+                <ng-select (search)="filterPartners($event)" appearance="outline" placeholder="Employé" formControlName="partner_id">
+                  <ng-option *ngFor="let item of employees" [value]="item.id">
+                    {{ item.full_name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12">
+                <ng-select appearance="outline" placeholder="Type de contrat" formControlName="contract_type_id">
+                  <ng-option *ngFor="let item of contractTypes" [value]="item.id">
+                    {{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12">
+                <div class="col-12">
+                  <ng-select appearance="outline" placeholder="Poste" formControlName="post_id">
+                    <ng-option *ngFor="let item of posts" [value]="item.id">
+                      {{ item.name }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <div class="col-12">
+                <mdb-form-control>
+                  <input mdbInput type="number" class="form-control" id="salary" formControlName="salary" placeholder="Salaire mensuel">
+                  <label mdbLabel class="form-label" for="salary">
+                    Salaire de base
+                  </label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" id="start_date" formControlName="start_date">
+                  <label mdbLabel class="form-label" for="start_date">Date de début</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" id="end_date" formControlName="end_date">
+                  <label mdbLabel class="form-label" for="end_date">Date de fin</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" id="observation" formControlName="observation" placeholder="Observation">
+                  <label mdbLabel class="form-label" for="observation">Observation</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form action="" method="POST" id="form">
+        <mdb-tabs>
+          <mdb-tab title="Primes">
+            <div class="table-responsive">
+              <table class="table table-sm border- mb-0">
+                <tbody>
+                  <tr *ngFor="let item of bonuses; index as i">
+                    <th>{{ item.name }}</th>
+                    <td class="text-end">
+                      <input type="hidden" name="bonuses[]" [value]="item.id">
+                      <input type="number" class="form-control" name="bonus[]" value="0" placeholder="Valeur...">
+                      <!-- <input type="number" class="form-control" [name]="'bonus-'+item.id" value="0" placeholder="Valeur..."> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mdb-tab>
+          <mdb-tab title="Indemnités">
+            <div class="table-responsive">
+              <table class="table table-sm border- mb-0">
+                <tbody>
+                  <tr *ngFor="let item of indemnities; index as i">
+                    <th>{{ item.name }}</th>
+                    <td class="text-end">
+                      <input type="hidden" name="indemnities[]" [value]="item.id">
+                      <input type="number" class="form-control" name="indemnity[]" value="0" placeholder="Valeur...">
+                      <!-- <input type="number" class="form-control" [name]="'indemnity-'+item.id" value="0" placeholder="Valeur..."> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

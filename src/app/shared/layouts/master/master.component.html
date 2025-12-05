@@ -1,0 +1,20 @@
+<section>
+  <app-header></app-header>
+
+  <main class="container-fluid">
+    <div class="d-flex- row g-0">
+      <div class="col-md-3">
+        <app-sidebar></app-sidebar>
+      </div>
+      <div id="page-content" class="col-md-9 flex-fill-">
+        <div class="ms-md-3 ms-0">
+          <app-page-header [title]="title" *ngIf="header">
+            <ng-content select="[header]"></ng-content>
+          </app-page-header>
+
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>

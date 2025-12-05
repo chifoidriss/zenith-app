@@ -1,0 +1,125 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} {{ data.type == 'hosting' ?'une chambre':'un produit' }}
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row gy-4 gx-3">
+      <div class="col-12">
+        <ng-select [placeholder]="data.type == 'hosting' ?'Chambre':'Produit'" (search)="filter($event)" appearance="outline" formControlName="article_id" (change)="changeArticle()">
+          <ng-option *ngFor="let item of articles" [value]="item.id">
+            <span *ngIf="data.type == 'hosting'">
+              {{ item.category?.full_name }} -
+            </span>
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-6- col-12" *ngIf="data.type != 'hosting'">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="label" formControlName="label" placeholder="Libellé">
+          <label mdbLabel class="form-label" for="label">Libellé</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12" [ngClass]="{'col-md-6': price?.calcul == 'H'}" *ngIf="data.type == 'hosting'">
+        <mdb-form-control>
+          <input mdbInput type="date" class="form-control" id="start_date" (keyup)="room = null" formControlName="start_date">
+          <label mdbLabel class="form-label" for="start_date">Date d'entrée</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12" *ngIf="data.type == 'hosting' && price?.calcul == 'H'">
+        <mdb-form-control>
+          <input mdbInput type="time" class="form-control" id="start_time" (keyup)="room = null" formControlName="start_time">
+          <label mdbLabel class="form-label" for="start_time">Heure d'entrée</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12" *ngIf="data.type == 'hosting'">
+        <ng-select placeholder="Type de séjour" appearance="outline" formControlName="unit_id" (change)="changeUnit()">
+          <ng-option *ngFor="let item of prices" [value]="item.unit_id">
+            {{ item.unit.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="qty" formControlName="qty" (keyup)="getTotal()" placeholder="Ex. 1">
+          <label mdbLabel class="form-label" for="qty">
+            {{ data.type == 'hosting' ?('Nombre '+(price?.calcul == 'D'?'Jours':'Heures')):'Quantité' }}
+          </label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12" *ngIf="data.type != 'hosting'">
+        <div class="form-group">
+          <label class="form-label">Unité de mesure</label>
+          <select class="form-control" formControlName="unit_id" (change)="changeUnit()">
+            <option *ngFor="let item of units" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="price" formControlName="price" (keyup)="getTotal()" placeholder="Prix">
+          <label mdbLabel class="form-label" for="price">Prix</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="subtotal" formControlName="subtotal" readonly="readonly" placeholder="Total">
+          <label mdbLabel class="form-label" for="subtotal">Total</label>
+        </mdb-form-control>
+      </div>
+
+      <div class="col-12" *ngIf="data.type == 'hosting' && room">
+        <div class="card card-body py-2 border border-danger">
+          <span class="text-danger">Cette chambre a déjà une réservation en cours</span>
+          <div class="d-flex">
+            <div class="me-1">
+              <i class="mdi mdi-account-box-outline" style="font-size: 50px; line-height: 50px;"></i>
+            </div>
+            <div class="">
+              <h6 class="m-0">{{ room.invoice.partner.name }}</h6>
+              <span>Type: {{ room.unit.name }}</span> <br>
+              <b>{{ room.start_date | locale }}</b> -
+              <b>{{ room.end_date | locale }}</b> <br>
+              <!-- <span>Total: {{ room.subtotal | price }}</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12" *ngIf="data.type == 'bar' && room">
+        <div class="card card-body py-2 border border-danger">
+          <span class="text-danger">Quantité non disponible</span>
+          <div class="">
+            <h6 class="m-0">{{ room.article.name }}</h6>
+            <!-- <span>En stock: {{ available }} unités</span> -->
+            <span>En stock: {{ room?.label || available }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" *ngIf="data.type == 'restaurant' && room">
+        <div class="card card-body py-2 border border-danger">
+          <span class="text-danger">Quantité non disponible</span>
+          <div class="mb-1 pb-1 border-bottom" *ngFor="let item of room.articles">
+            <h6 class="m-0">{{ item.article.name }}</h6>
+            <span>En stock: {{ item.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="store()" [disabled]="invalid()">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onload"></span>
+    Ajouter
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

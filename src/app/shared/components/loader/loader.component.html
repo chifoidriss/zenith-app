@@ -1,0 +1,18 @@
+
+<div class="card p-2 mx-auto mt-4 rounded-lg d-flex justify-content-center align-items-center" *ngIf="loader.loading">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>
+
+<div class="error d-flex justify-content-center align-items-center align-content-center flex-column" *ngIf="loader.hasError">
+  <div class="image-block">
+    <img src="assets/img/error404-01.svg" alt="">
+  </div>
+  <p class="fw-bold mt-4">
+    Il semble que vous soyez hors ligne ou essayer de rafraîchir la page.
+  </p>
+  <div class="mt-2">
+    <button class="btn btn-primary" (click)="reload()">Recharger la page</button>
+  </div>
+</div>

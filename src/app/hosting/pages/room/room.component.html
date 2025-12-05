@@ -1,0 +1,65 @@
+<app-master title="Chambres">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <!-- <a class="btn btn-primary">Ajouter une nouvelle Chambre</a> -->
+    </div>
+    <div class="">
+      <input type="search" class="form-control" placeholder="Rechercher...">
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive bg-white">
+      <table class="table table-sm mb-0 table-striped">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">Chambres</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">Durée</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Facture</th>
+            <th scope="col">Arrivée</th>
+            <th scope="col">Depart</th>
+            <th scope="col" *ngIf="auth.can(['HOSTING_W'])"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data.data; index as i">
+            <th>
+              <b class="fw-bold pointer" (click)="alert.detailArticle(item.id)">
+                {{ item.name }}
+              </b>
+            </th>
+            <th>
+              {{ item.category.name }}
+            </th>
+            <td class="fw-bold" [ngClass]="{'table-warning': item.room?.status == 0, 'table-danger': item.room?.status}">
+              <span *ngIf="item.room">
+                {{ item.room.status ? 'Occupée' : 'Libérée' }}
+              </span>
+              <span *ngIf="!item.room">Libre</span>
+            </td>
+            <td>
+              {{ item.room?.qty }}
+              {{ item.room?.unit?.name }}
+            </td>
+            <th>{{ item.room ? (item.room?.subtotal | price) : ''  }}</th>
+            <th>{{ item.room ? (item.room.invoice?.due_amount == 0 ? 'Soldée':'Non soldée') : '' }}</th>
+            <td>{{ item.room ? (item.room?.start_date | locale) : '' }}</td>
+            <td>{{ item.room ? (item.room?.end_date | locale) : '' }}</td>
+            <td *ngIf="auth.can(['HOSTING_W'])">
+              <button class="btn btn-sm rounded btn-info" (click)="freeUp(item.room)" *ngIf="item.room?.status">
+                Libérer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

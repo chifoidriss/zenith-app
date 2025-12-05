@@ -1,0 +1,139 @@
+<app-master title="Paramètres généraux">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button class="btn btn-sm btn-primary" (click)="save()">Enregistrer</button>
+    </div>
+    <div class="">
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <h5 class="card-header mb-0">Configurer les factures</h5>
+    <div class="card-body">
+      <div class="row g-2">
+        <div class="col-md-6 col-12">
+          <div class="item-check">
+            <div class="form-check">
+              <input mdbCheckbox type="checkbox" id="form-allow_timer" class="form-check-input"/>
+              <label class="form-check-label" for="form-allow_timer">
+                <b>Modification facture</b>
+                <br>
+                <small>Autoriser la modification une fois la facture confirmée ? (Non recommandée)</small>
+              </label>
+            </div>
+          </div>
+
+          <div class="item-check">
+            <div class="form-check">
+              <input mdbCheckbox type="checkbox" id="form-allow_timer" class="form-check-input"/>
+              <label class="form-check-label" for="form-allow_timer">
+                <b>Remises</b>
+                <br>
+                <small>Autoriser les remises sur l'ensemble des produits des factures ?</small>
+              </label>
+            </div>
+          </div>
+
+          <div class="item-check">
+            <div class="form-check">
+              <input mdbCheckbox type="checkbox" id="form-allow_timer" class="form-check-input"/>
+              <label class="form-check-label" for="form-allow_timer">
+                <b>TVA sur les ventes</b>
+                <br>
+                <small>Autoriser les TVA sur les factures des ventes ?</small>
+              </label>
+            </div>
+          </div>
+
+          <div class="item-check">
+            <div class="form-check">
+              <input mdbCheckbox type="checkbox" id="form-allow_timer" class="form-check-input"/>
+              <label class="form-check-label" for="form-allow_timer">
+                <b>TVA sur les achats</b>
+                <br>
+                <small>Autoriser les TVA sur les factures des achats ?</small>
+              </label>
+            </div>
+          </div>
+
+          <div class="item-check">
+            <div class="form-check">
+              <input mdbCheckbox type="checkbox" id="form-allow_timer" class="form-check-input"/>
+              <label class="form-check-label" for="form-allow_timer">
+                <b>Changer les prix</b>
+                <br>
+                <small>Autoriser le changement des prix lors de la facturation ?</small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+          <div class="row g-3">
+            <div class="col-12">
+              <mdb-form-control>
+                <input mdbInput type="text" class="form-control" id="due_days" placeholder="REF">
+                <label mdbLabel class="form-label" for="due_days">Nombres de jours d'échéance par défaut</label>
+              </mdb-form-control>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <h5 class="card-header mb-0">Configurer les références</h5>
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_client" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_client">Référence clients</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_supplier" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_supplier">Référence fournisseurs</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_invoice_client" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_invoice_client">Référence factures de ventes</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_refund_client" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_refund_client">Référence avoirs de ventes</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_invoice_supplier" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_invoice_supplier">Référence factures d'achats</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_refund_supplier" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_refund_supplier">Référence avoirs d'achats</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_payment_in" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_payment_in">Référence paiements entrants</label>
+          </mdb-form-control>
+        </div>
+        <div class="col-md-6 col-12">
+          <mdb-form-control>
+            <input mdbInput type="text" class="form-control" id="reference_payment_out" placeholder="REF">
+            <label mdbLabel class="form-label" for="reference_payment_out">Référence paiements sortants</label>
+          </mdb-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-master>

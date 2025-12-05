@@ -1,0 +1,15 @@
+<div class="tabs" *ngIf="platform.ANDROID || platform.IOS">
+  <div class="tab-item" [routerLink]="tab.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let tab of menu">
+    <span class="item-icon">
+      <i [class]="tab.icon"></i>
+    </span>
+    <span class="item-label">{{ tab.name }}</span>
+  </div>
+
+  <div class="tab-item" (click)="openMenu($event)">
+    <span class="item-icon">
+      <i class="mdi mdi-menu"></i>
+    </span>
+    <span class="item-label">Plus</span>
+  </div>
+</div>

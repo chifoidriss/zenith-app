@@ -1,0 +1,121 @@
+<app-master [title]="'Paiements '+ title">
+  <div header class="row g-3 align-items-end">
+    <div class="col">
+      <div class="row row-cols-5 align-items-end">
+        <div class="col" *ngIf="payment_methods.length > 1">
+          <ng-select [clearable]="false" [(ngModel)]="params.payment_method">
+            <ng-option value="">Mode de paiement</ng-option>
+            <ng-option *ngFor="let item of payment_methods" [value]="item.id">
+              {{ item.name }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="col">
+          <ng-select [clearable]="false" [(ngModel)]="params.sens">
+            <ng-option value="">Tout</ng-option>
+            <ng-option value="IN">Encaissements</ng-option>
+            <ng-option value="OUT">Décaissements</ng-option>
+          </ng-select>
+        </div>
+        <div class="col">
+          <ng-select [clearable]="false" [(ngModel)]="params.date">
+            <ng-option value="today">Aujourd'hui</ng-option>
+            <ng-option value="yesterday">Hier</ng-option>
+            <ng-option value="week">Cette semaine</ng-option>
+            <ng-option value="week2">Ces 15 jours</ng-option>
+            <ng-option value="month">Ce mois</ng-option>
+            <ng-option value="trim">Ce trimestre</ng-option>
+            <ng-option value="sem">Ce semestre</ng-option>
+            <ng-option value="year">Cette année</ng-option>
+            <ng-option value="custom">Définir moi même</ng-option>
+          </ng-select>
+        </div>
+        <div class="col" *ngIf="params.date == 'custom'">
+          <mdb-form-control>
+            <input mdbInput type="date" class="form-control" [(ngModel)]="params.form_date" placeholder="Date du début">
+            <label mdbLabel class="form-label">Date du début</label>
+          </mdb-form-control>
+        </div>
+        <div class="col" *ngIf="params.date == 'custom'">
+          <mdb-form-control>
+            <input mdbInput type="date" class="form-control" [(ngModel)]="params.to_date" placeholder="Date de fin">
+            <label mdbLabel class="form-label">Date de fin</label>
+          </mdb-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="text-end">
+        <button class="btn btn-primary btn-sm" (click)="ngOnInit()">Filtrer</button>
+      </div>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="table fixed-first-column table-sm table-striped border mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th width="5px">#</th>
+            <th width="10px">Référence</th>
+            <th width="10px">Facture</th>
+            <th class="text-capitalize">
+              {{ type == 'suppliers'?'Fournisseur':type == 'salaries'?'Employé':'Client' }}
+            </th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Méthode</th>
+            <th>Statut</th>
+            <th *ngIf="canWrite"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.data; index as i">
+            <th>{{ data.from + i }}</th>
+            <td>
+              <b class="text-primary pointer" (click)="detailPayment(item.id)">
+                {{ item.reference }}
+              </b>
+            </td>
+            <td>
+              <a (click)="detailInvoice(item.invoice, i)" class="pointer fw-bold">
+                {{ item.invoice.reference }}
+              </a>
+              <!-- {{ item.invoice.reference }} -->
+            </td>
+            <td>
+              <a *ngIf="item.partner" (click)="detailPartner(item.partner.id, i)" class="pointer text-dark fw-bold">
+                {{ item.partner.full_name }}
+              </a>
+            </td>
+            <td>{{ item.payment_date | locale }}</td>
+            <td>
+              <i class="mdi" style="font-size:14px;line-height:14px;" [ngClass]="item.type == 'IN'?'mdi-arrow-down text-success':'mdi-arrow-up text-danger'"></i>
+              {{ item.amount | price }}
+            </td>
+            <td>{{ item.payment_method.name }}</td>
+            <td>
+              <span class="badge badge-success" *ngIf="item.status">Reçu</span>
+              <span class="badge badge-secondary" *ngIf="!item.status">Non reçu</span>
+            </td>
+            <td class="text-end" *ngIf="canWrite">
+              <!-- <button class="btn btn-sm py-1 px-2 btn-light text-primary" >
+                <i class="mdi mdi-pencil-box-outline" style="font-size: 14px; line-height: 14px;"></i>
+              </button> -->
+              <!-- <button class="btn btn-sm py-1 px-2 btn-light text-danger ms-2-" (click)="removeItem(i, item)">
+                <i class="mdi mdi-trash-can-outline" style="font-size: 14px; line-height: 14px;"></i>
+              </button> -->
+              <button class="btn btn-sm py-1 px-2 btn-light text-danger ms-2-" (click)="cancel(item)">
+                <i class="mdi mdi-cancel" style="font-size: 14px; line-height: 14px;"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" [params]="params" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

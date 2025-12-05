@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} une devise
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="devise" formControlName="devise" placeholder="Devise">
+          <label mdbLabel class="form-label" for="devise">Devise</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="symbol" formControlName="symbol" placeholder="Symbole">
+          <label mdbLabel class="form-label" for="symbol">Symbole</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="name">Nom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="unity" formControlName="unity" placeholder="Unité monétaire">
+          <label mdbLabel class="form-label" for="unity">Unité monétaire</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mat-checkbox formControlName="status" value="1">Active</mat-checkbox>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

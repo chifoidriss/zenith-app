@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>
+  Informations
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="John">
+      <label mdbLabel class="form-label" for="first_name">Prénom</label>
+    </mdb-form-control>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Doe">
+      <label mdbLabel class="form-label" for="last_name">Nom</label>
+    </mdb-form-control>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="title" formControlName="title" placeholder="DG. Optima Corporation">
+      <label mdbLabel class="form-label" for="title">Titre du profil</label>
+    </mdb-form-control>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

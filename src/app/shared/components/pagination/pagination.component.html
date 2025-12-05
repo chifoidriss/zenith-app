@@ -1,0 +1,27 @@
+<div class="card card-body py-1 pb-0 border-top- sticky-bottom">
+  <!-- <div class="text-center mt-0 p-2 fw-bold-" *ngIf="data.data.length == 0">
+    Aucune donnée à afficher
+  </div> -->
+  <div class="empty-data" *ngIf="data.data.length == 0">
+    <div class="mt-5">
+      <img src="assets/img/empty-1.svg" class="mb-3" height="220px">
+    </div>
+
+    <p class="fw-bold">
+      Aucune donnée à afficher
+    </p>
+
+    <div class="mt-5"></div>
+  </div>
+
+  <nav class="pagination-data" *ngIf="data.data.length > 0">
+    <div class="fw-bold">
+      {{ data.from }} ~ {{ data.to }} sur {{ data.total }} résultats
+    </div>
+    <ul class="pagination pagination-circle align-items-center justify-content-center flex-wrap">
+      <li class="page-item" [ngClass]="{'active': link.active}" *ngFor="let link of data.links">
+        <a class="page-link pointer" (click)="onPage(link.url)" [innerHTML]="link.label"></a>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,131 @@
+<nav class="navbar navbar-dark bg-primary navbar-expand-md fixed-top">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center">
+      <span class="pointer me-2 text-white d-md-none d-block" (click)="openMenu()" type="button">
+        <i class="mdi mdi-menu" style="font-size: 28px; line-height: 28px;"></i>
+      </span>
+      <a class="navbar-brand fw-bold" routerLink="/">
+        <i class="mdi mdi-manjaro me-1" style="font-size: 22px; line-height: 22px;"></i>
+        <span class="ms-1">{{ APP_NAME }}</span>
+      </a>
+    </div>
+
+    <!-- <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item" [ngClass]="{'dropdown': tab.links.length > 0}" *ngFor="let tab of sideLinks">
+          <a class="nav-link" *ngIf="tab.links.length == 0"
+          [routerLink]="tab.link" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}">
+            <i [class]="tab.icon +' me-1'"></i>
+            {{ tab.name }}
+          </a>
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" *ngIf="tab.links.length > 0"
+          routerLinkActive="active">
+            <i [class]="tab.icon +' me-1'"></i>
+            {{ tab.name }}
+          </a>
+          <ul class="dropdown-menu" *ngIf="tab.links.length > 0">
+            <li *ngFor="let subLink of tab.links">
+              <a class="dropdown-item"
+              [routerLink]="subLink.link"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}">
+                {{ subLink.name }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div> -->
+
+    <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center me-3">
+        <!-- <span class="icon pointer text-white">
+          <i class="mdi mdi-magnify" style="font-size: 26px;"></i>
+        </span> -->
+        <span class="icon pointer text-white ms-3" [routerLink]="'/account/notifications'">
+          <i class="mdi mdi-bell-outline" style="font-size: 26px;"></i>
+        </span>
+      </div>
+
+      <div class="" *ngIf="!auth.isConnect">
+        <a routerLink="/auth/login" class="btn btn-danger">Se connecter</a>
+      </div>
+
+      <div class="dropdown" *ngIf="auth.isConnect">
+        <div class="pointer" data-bs-toggle="dropdown">
+          <img [src]="auth.user.avatar" class="rounded-circle" height="34px" width="34px" alt="avatar">
+        </div>
+
+        <ul class="dropdown-menu dropdown-menu-end" style="min-width: 250px;">
+          <li>
+            <div class="d-flex align-items-center px-3 pt-3 mb-3">
+              <div class="icon me-2">
+                <img [src]="auth.user.avatar" class="rounded-circle" height="42px" width="42px" alt="avatar">
+              </div>
+              <div class="d-flex flex-column" style="line-height: 1rem;">
+                <span class="fw-bold" style="font-size: 15px;">{{ auth.user.name }}</span>
+                <span style="font-size: 12px;">{{ auth.user.title }}</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a class="dropdown-item rounded-" routerLink="/account/profile">
+              <i class="me-2 mdi mdi-account"></i>
+              Mon profil
+            </a>
+          </li>
+          <li *ngIf="auth.can(['USER_ROLE_R'])">
+            <a class="dropdown-item rounded-" routerLink="/account/users">
+              <i class="me-2 mdi mdi-account-convert"></i>
+              Utilisateurs
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item rounded-" routerLink="/account/settings">
+              <i class="me-2 mdi mdi-cog"></i>
+              Paramètres
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item rounded-" routerLink="/helps">
+              <i class="me-2 mdi mdi-help-circle-outline"></i>
+              Aides
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item rounded- text-danger pointer" (click)="auth.logout()">
+              <i class="me-2 mdi mdi-power"></i>
+              Se déconnecter
+            </a>
+          </li>
+          <li><hr class="dropdown-divider"/></li>
+          <li class="p-1-">
+            <div class="btn-group btn-group-sm w-100" role="group">
+              <button type="button" class="btn btn-light">
+                <i class="me-2 mdi mdi-white-balance-sunny"></i>
+                Light
+              </button>
+              <button type="button" class="btn btn-light">
+                <i class="me-2 mdi mdi-weather-night"></i>
+                Dark
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="window ms-4">
+        <span class="icon" (click)="minimize()">
+          <i class="mdi mdi-window-minimize"></i>
+        </span>
+        <span class="icon" (click)="maximize()">
+          <i class="mdi mdi-window-maximize"></i>
+        </span>
+        <span class="icon" (click)="close()">
+          <i class="mdi mdi-window-close"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</nav>

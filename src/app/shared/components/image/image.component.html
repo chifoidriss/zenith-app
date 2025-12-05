@@ -1,0 +1,16 @@
+<div class="d-flex flex-column align-items-end justify-content-center">
+  <div class="user-avatar">
+    <img [src]="imageUrl" *ngIf="imageUrl">
+    <img src="assets/img/image-outline.svg" *ngIf="!imageUrl">
+    <div class="icons">
+      <span class="icon" (click)="imageFile.click()">
+        <i class="mdi mdi-image-edit-outline"></i>
+      </span>
+      <span class="icon" (click)="resetFileImage(imageFile)">
+        <i class="mdi mdi-close"></i>
+      </span>
+    </div>
+  </div>
+  <!-- <label class="form-label">Image</label> -->
+  <input type="file" #imageFile hidden accept="image/*" (change)="fileEvent($event)">
+</div>

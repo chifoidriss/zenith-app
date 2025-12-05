@@ -1,0 +1,64 @@
+<app-master title="Stocks">
+  <div header class="d-flex justify-content-between">
+    <div class="d-flex">
+      <button class="btn btn-sm btn-primary" *ngIf="auth.can(['STOCKING_W'])" (click)="addItem()" [disabled]="!warehouse">Ajouter</button>
+      <div class="dropdown ms-2">
+        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Entrepôt {{ warehouse?.name }}
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngFor="let item of warehouses">
+            <a class="dropdown-item" (click)="loadArticles(item)">{{ item.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="">
+      <input type="search" class="form-control form-control-sm" placeholder="Rechercher...">
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="table fixed-first-column table-sm table-striped border mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th width="5px">#</th>
+            <th width="10px">Référence</th>
+            <th width="100px">Catégorie</th>
+            <th>Nom</th>
+            <th>Unité de stockage</th>
+            <th>En stock</th>
+            <th>Qté min</th>
+            <th *ngIf="auth.can(['STOCKING_W'])"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.data; index as i">
+            <th>{{ data.from + i }}</th>
+            <td>{{ item.article.reference }}</td>
+            <td>
+              <span class="text-nowrap">{{ item.article.category?.name }}</span>
+            </td>
+            <td>{{ item.article.name }}</td>
+            <td>{{ item.unit.name }}</td>
+            <td>{{ item.qty | unity }}</td>
+            <td>{{ item.qty_min | unity }}</td>
+            <td *ngIf="auth.can(['STOCKING_W'])" class="text-end">
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-light text-primary" (click)="editItem(i, item)">
+                <i class="mdi mdi-pencil" style="font-size: 14px; line-height: 14px;"></i>
+              </button>
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-light text-danger ms-2" (click)="removeItem(i, item)">
+                <i class="mdi mdi-trash-can-outline" style="font-size: 14px; line-height: 14px;"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

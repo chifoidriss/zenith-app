@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un journal
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="name">Nom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="code" formControlName="code" placeholder="Code">
+          <label mdbLabel class="form-label" for="code">Code</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="unity" formControlName="unity" placeholder="Unité de valeur">
+          <label mdbLabel class="form-label" for="unity">Unité de valeur</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

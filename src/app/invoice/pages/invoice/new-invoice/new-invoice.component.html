@@ -1,0 +1,257 @@
+<app-master [title]="(id?'Modifier ':'Ajouter ')+title">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button class="btn btn-sm btn-primary" [disabled]="invalid()" (click)="store()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onLoad"></span>
+        Enregistrer
+      </button>
+      <button class="btn btn-sm btn-outline-danger ms-2" navBack>Retour</button>
+    </div>
+    <div class="">
+      <button class="btn btn-sm btn-success" *ngIf="id && invoice?.status && invoice.due_amount > 0" (click)="addPayment()">Payer</button>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="card mb-4" *ngIf="!loading">
+    <div class="card-header" *ngIf="id">
+      <div class="d-flex justify-content-between">
+        <div class="">
+          <button class="btn btn-sm btn-secondary" (click)="print()">
+            <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+            Imprimer
+          </button>
+          <!-- <button class="btn btn-sm btn-outline-danger ms-2">Avoir</button> -->
+          <!-- <button class="btn btn-outline-primary">Apercu</button> -->
+          <button class="btn btn-sm btn-info ms-2" *ngIf="!invoice?.status" (click)="validate()">
+            <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+            Valider
+          </button>
+          <!-- <button class="btn btn-sm btn-warning ms-2" (click)="duplicateInvoice()">
+            <i class="mdi mdi-text-box-multiple-outline" style="font-size: 14px; line-height: 14px;"></i>
+            Dupliquer
+          </button> -->
+          <button class="btn btn-sm btn-danger ms-2" (click)="duplicateInvoice(true)">
+            <i class="mdi mdi-receipt-text-arrow-left" style="font-size: 14px; line-height: 14px;"></i>
+            Avoir
+          </button>
+        </div>
+        <div class=""></div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <div class="col-12">
+                <ng-select class="custom" (search)="filterPartners($event)" [addTag]="createPartner" addTagText="Créer et modifier " appearance="outline" placeholder="Facturer à" formControlName="partner_id">
+                  <ng-option *ngFor="let item of partners" [value]="item.id">
+                    {{ item.full_name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12" *ngIf="devises.length > 1">
+                <ng-select appearance="outline" placeholder="Devise" formControlName="devise_id">
+                  <ng-option *ngFor="let item of devises" [value]="item.id">
+                    {{ item.name }} ({{ item.devise }})
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-6">
+            <div class="row g-3">
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" placeholder="" formControlName="billing_date">
+                  <label mdbLabel class="form-label">Date de facturation</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" placeholder="" formControlName="due_date">
+                  <label mdbLabel class="form-label">Date d'échéance</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mdb-tabs>
+          <mdb-tab *ngIf="type == 'hosting'">
+            <ng-template mdbTabTitle>
+              <span><i class="mdi mdi-hospital-building me-2"></i>Réservations</span>
+            </ng-template>
+            <div class="table-responsive">
+              <table class="table border- table-striped table-hover">
+                <thead class="table-primary">
+                  <tr>
+                    <th>Chambre</th>
+                    <th>Date d'arrivée</th>
+                    <th class="text-end">Durée</th>
+                    <th class="text-end">Prix</th>
+                    <th class="text-end">Total</th>
+                    <th width="50px" *ngIf="!invoice?.status"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of items; index as i">
+                    <td>{{ item.article?.name }}</td>
+                    <td>
+                      {{ item.start_date | locale }}
+                      <span *ngIf="item.calcul">
+                        à {{ item.calcul == 'H' ? item.start_time : '12:00' }}
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      {{ item.qty }}
+                      {{ item.unit.name }}
+                    </td>
+                    <td class="text-end">{{ item.price | price }}</td>
+                    <td class="text-end">{{ item.subtotal | price }}</td>
+                    <td class="text-end" *ngIf="!invoice?.status">
+                      <span class="pointer text-primary" (click)="editItem(i, item)">
+                        <i class="mdi mdi-pencil-box-outline"></i>
+                      </span>
+                      <span class="pointer text-danger ms-2" (click)="removeItem(i, item)">
+                        <i class="mdi mdi-trash-can-outline"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" *ngIf="!invoice?.status" (click)="addItem()">Ajouter une chambre</button>
+
+            <div class="row g-3">
+              <div class="col"></div>
+              <div class="col-auto">
+                <table class="table border-top table-borderless mb-0">
+                  <tbody>
+                    <tr>
+                      <td class="w-100 text-end pe-4">Total:</td>
+                      <td>
+                        <b class="fw-bold mb-0">{{ form.get('total')?.value | price }}</b>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let item of payments">
+                      <td class="w-100 text-end pe-4">
+                        <a class="pointer" (click)="detailPayment(item.id)">
+                          <i class="mdi mdi-information-variant-circle" style="font-size: 20px; line-height: 20px;"></i>
+                        </a>
+                        Payé le <i class="text-italic">{{ item.payment_date | locale }}</i>
+                      </td>
+                      <td>{{ item.amount | price }}</td>
+                    </tr>
+                    <tr *ngIf="id">
+                      <td class="w-100 text-end pe-4">Montant restant:</td>
+                      <td>
+                        <b class="fw-bold mb-0">{{ form.get('due_amount')?.value | price }}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdb-tab>
+          <mdb-tab *ngIf="type != 'hosting'">
+            <ng-template mdbTabTitle>
+              <span><i class="mdi mdi-shopping-outline me-2"></i>Lignes de facture</span>
+            </ng-template>
+            <div class="table-responsive">
+              <table class="table border- table-striped table-hover">
+                <thead class="table-primary">
+                  <tr>
+                    <th>Produit</th>
+                    <th>Libellé</th>
+                    <th class="text-end">Qté</th>
+                    <th>UdM</th>
+                    <th class="text-end">Prix</th>
+                    <th class="text-end">Total</th>
+                    <th width="50px" *ngIf="!invoice?.status"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of items; index as i">
+                    <td>{{ item.article?.name.substring(0, 20) }}</td>
+                    <td>{{ item.label }}</td>
+                    <td class="text-end">{{ item.qty }}</td>
+                    <td>{{ item.unit.name }}</td>
+                    <td class="text-end">{{ item.price | price }}</td>
+                    <td class="text-end">{{ item.subtotal | price }}</td>
+                    <td class="text-end" *ngIf="!invoice?.status">
+                      <span class="pointer text-primary" (click)="editItem(i, item)">
+                        <i class="mdi mdi-pencil-box-outline"></i>
+                      </span>
+                      <span class="pointer text-danger ms-2" (click)="removeItem(i, item)">
+                        <i class="mdi mdi-trash-can-outline"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" *ngIf="!invoice?.status" (click)="addItem()">Ajouter un article</button>
+
+            <div class="row g-3">
+              <div class="col"></div>
+              <div class="col-auto">
+                <table class="table border-top table-borderless mb-0">
+                  <tbody>
+                    <tr>
+                      <td class="w-100 text-end pe-4">Total:</td>
+                      <td>
+                        <b class="fw-bold mb-0">{{ form.get('total')?.value | price }}</b>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let item of payments">
+                      <td class="w-100 text-end pe-4">
+                        <a tabindex="0" class="pointer" role="button" trigger="focus"
+                          mdbPopoverHeader="Info sur le paiement"
+                          placement="left"
+                          [mdbPopover]="template">
+                          <i class="mdi mdi-information-variant-circle" style="font-size: 20px; line-height: 20px;"></i>
+                        </a>
+                        Payé le <i class="text-italic">{{ item.payment_date | locale }}</i>
+
+                        <ng-template #template>
+                          <div class="">
+                            <b>Montant:</b>
+                            <span>{{ item.amount | price }}</span>
+                          </div>
+                          <div class="">
+                            <b>Référence:</b>
+                            <span>{{ item.reference }}</span>
+                          </div>
+                          <div class="">
+                            <b>Date:</b>
+                            <span>{{ item.payment_date | locale }}</span>
+                          </div>
+                          <div class="">
+                            <b>Mode de paiement:</b>
+                            <span>{{ item.payment_method?.name }}</span>
+                          </div>
+                        </ng-template>
+                      </td>
+                      <td>{{ item.amount | price }}</td>
+                    </tr>
+                    <tr *ngIf="id">
+                      <td class="w-100 text-end pe-4">Montant restant:</td>
+                      <td>
+                        <b class="fw-bold mb-0">{{ form.get('due_amount')?.value | price }}</b>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

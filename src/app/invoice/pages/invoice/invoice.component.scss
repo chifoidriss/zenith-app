@@ -1,0 +1,12 @@
+.valid {
+  cursor: pointer;
+
+  i {
+    display: none;
+  }
+  &:hover {
+    i {
+      display: unset;
+    }
+  }
+}

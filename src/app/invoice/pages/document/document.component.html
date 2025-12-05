@@ -1,0 +1,78 @@
+<app-master title="Paramètres des documents">
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="card-header-title mb-0">Informations de la société</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="">
+        <label class="form-label">
+          Nom de la société <br>
+          <b>{{ society?.name }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Numéro d'identification unique <br>
+          <b>{{ society?.uid }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Numéro du contribuable <br>
+          <b>{{ society?.registre }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Numéro de téléphone <br>
+          <b>{{ society?.phone }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Adresse email <br>
+          <b>{{ society?.email }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Adresse <br>
+          <b>{{ society?.address_name }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Site internet <br>
+          <b>{{ society?.site }}</b>
+        </label>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-sm btn-outline-primary" (click)="editSociety()">
+        Mettre à jour les informations
+      </button>
+    </div>
+  </div>
+
+  <!-- <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="card-header-title mb-0">Modèle de facture par défaut</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-4">
+          <div class="card card-body" style="height: 200px;">
+            Simplifié
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card card-body" style="height: 200px;">
+            Professionnel
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</app-master>

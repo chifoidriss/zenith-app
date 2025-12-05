@@ -1,0 +1,116 @@
+<app-master title="Ajouter des écritures comptables">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button class="btn btn-sm btn-primary" [disabled]="invalid()" (click)="store()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onLoad"></span>
+        Enregistrer
+      </button>
+      <button class="btn btn-sm btn-outline-danger ms-2" navBack>Retour</button>
+    </div>
+    <div class=""></div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="card mb-4" *ngIf="!loading">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <div class="col-12">
+                <ng-select (search)="filterPartners($event)" class="custom" appearance="outline" placeholder="Facturer à" formControlName="partner_id">
+                  <ng-option *ngFor="let item of partners" [value]="item.id">
+                    {{ item.full_name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12" *ngIf="devises.length > 1">
+                <ng-select appearance="outline" placeholder="Devise" formControlName="devise_id">
+                  <ng-option *ngFor="let item of devises" [value]="item.id">
+                    {{ item.name }} ({{ item.devise }})
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12">
+                <mdb-form-control>
+                  <input mdbInput type="file" class="form-control" placeholder="Choisir un fichier" (change)="fileEvent($event)">
+                  <label mdbLabel class="form-label">Pièces comptables</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" placeholder="" formControlName="billing_date">
+                  <label mdbLabel class="form-label">Date de facturation</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" placeholder="Référence" formControlName="reference">
+                  <label mdbLabel class="form-label">Référence du document</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mdb-tabs>
+          <mdb-tab>
+            <ng-template mdbTabTitle>
+              <span><i class="mdi mdi-hospital-building me-2"></i>Écritures</span>
+            </ng-template>
+            <div class="table-responsive">
+              <table class="table table-sm table-striped mb-0" id="data">
+                <thead class="table-primary">
+                  <tr>
+                    <th colspan="2">Compte</th>
+                    <th>Libellé</th>
+                    <th class="border">Débit</th>
+                    <th class="border">Crédit</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let item of lines; index as i" [id]="'invoice'+item.id" class="">
+                    <th width="5px" class="pe-0 fw-bold">
+                      {{ item.chart_account?.account.split(' ')[0] }}
+                    </th>
+                    <td class="ps-1">{{ item.chart_account?.name }}</td>
+                    <td>{{ item.label }}</td>
+                    <td class="border">{{ item.debit | price:'' }}</td>
+                    <td class="border">{{ item.credit | price:'' }}</td>
+                    <td class="text-end">
+                      <span class="pointer text-primary" (click)="editLine(item, i)">
+                        <i class="mdi mdi-pencil-box-outline"></i>
+                      </span>
+                      <span class="pointer text-danger ms-2" (click)="removeLine(item, i)">
+                        <i class="mdi mdi-trash-can-outline"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+
+                <!-- <tfoot [ngClass]="{debit_total == credit_total?'table-danger':'table-primary'}"> -->
+                <tfoot [ngClass]="{'table-success': debit_total == credit_total, 'table-danger': debit_total != credit_total}">
+                  <tr class="fw-bold">
+                    <th colspan="3">Total</th>
+                    <th>{{ debit_total | price }}</th>
+                    <th>{{ credit_total | price }}</th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <button class="btn btn-sm btn-outline-primary mt-3" (click)="addLine()">Ajouter une écriture</button>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

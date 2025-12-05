@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>
+  Informations du compte
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="text" class="form-control" id="username" formControlName="username" placeholder="Nom d'utilisateur">
+      <label mdbLabel class="form-label" for="username">Nom d'utilisateur</label>
+    </mdb-form-control>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="email" class="form-control" id="email" formControlName="email" placeholder="Adresse email">
+      <label mdbLabel class="form-label" for="email">Adresse email</label>
+    </mdb-form-control>
+    <mdb-form-control class="mb-3">
+      <input mdbInput type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Numéro de téléphone">
+      <label mdbLabel class="form-label" for="phone">Numéro de téléphone</label>
+    </mdb-form-control>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

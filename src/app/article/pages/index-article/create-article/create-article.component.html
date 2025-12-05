@@ -1,0 +1,206 @@
+<app-master [title]="(id?'Modifier':'Nouveau')+' produit'">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button type="button" class="btn btn-sm btn-primary" [disabled]="form.invalid || isLoad" (click)="store()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="isLoad"></span>
+        Enregistrer
+      </button>
+      <button type="button" class="btn btn-sm btn-danger ms-2" navBack>Annuler</button>
+    </div>
+    <div class="">
+      <!-- <input type="search" class="form-control" placeholder="Rechercher..."> -->
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-7">
+            <div class="row g-3">
+              <div class="col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="name" placeholder="ex. Samsung A12" >
+                  <label mdbLabel class="form-label">Nom</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6">
+                <ng-select appearance="outline" placeholder="Type" formControlName="type">
+                  <ng-option value="STOCKABLE">Stockable</ng-option>
+                  <ng-option value="CONSUMABLE">Consommable</ng-option>
+                  <ng-option value="SERVICE">Service</ng-option>
+                  <ng-option value="ROOM">Chambre</ng-option>
+                  <ng-option value="MENU">Menu</ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-6">
+                <ng-select appearance="outline" placeholder="Catégorie" formControlName="category_id">
+                  <ng-option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.full_name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-6">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="reference" readonly="readonly" placeholder="ex. xxx-xxx">
+                  <label mdbLabel class="form-label">Référence interne</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="barcode" placeholder="ex. 6XXXX XXXX">
+                  <label mdbLabel class="form-label">Code-barres</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <app-image [src]="imageUrl" (file)="fileData = $event"></app-image>
+          </div>
+        </div>
+
+        <mdb-tabs>
+          <mdb-tab title="Prix">
+            <div class="row g-3" *ngIf="form.get('type')?.value != 'ROOM'">
+              <div class="col-12">
+                <mat-checkbox formControlName="can_sale" value="1">Peut être vendu ?</mat-checkbox>
+                <mat-checkbox formControlName="can_purchase" value="1">Peut être acheté ?</mat-checkbox>
+              </div>
+              <div class="col-md-6 col-12" [ngClass]="{'d-none': form.get('can_sale')?.value != '1'}">
+                <ng-select appearance="outline" placeholder="Unité de vente par défaut" formControlName="sale_unit_id">
+                  <ng-option *ngFor="let unit of units" [value]="unit.id">
+                    {{ unit.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-6 col-12" [ngClass]="{'d-none': form.get('can_sale')?.value != '1'}">
+                <mdb-form-control>
+                  <input mdbInput type="number" class="form-control" formControlName="price" placeholder="ex. 1" >
+                  <label mdbLabel class="form-label">Prix de vente</label>
+                </mdb-form-control>
+              </div>
+
+              <div class="col-md-6 col-12" [ngClass]="{'d-none': form.get('can_purchase')?.value != '1'}">
+                <ng-select appearance="outline" placeholder="Unité d'achat par défaut" formControlName="purchase_unit_id">
+                  <ng-option *ngFor="let unit of units" [value]="unit.id">
+                    {{ unit.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-6 col-12" [ngClass]="{'d-none': form.get('can_purchase')?.value != '1'}">
+                <mdb-form-control>
+                  <input mdbInput type="number" class="form-control" formControlName="cost" placeholder="ex. 1" >
+                  <label mdbLabel class="form-label">Prix d'achat</label>
+                </mdb-form-control>
+              </div>
+            </div>
+
+            <div class="mt-3" *ngIf="form.get('type')?.value == 'ROOM'">
+              <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                  <thead class="table-primary">
+                    <tr>
+                      <th>Type de séjour</th>
+                      <th>Calculé en</th>
+                      <th class="text-end">Prix normal</th>
+                      <th class="text-end">Prix min</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of prices; index as i">
+                      <td>{{ item.unit.name }}</td>
+                      <td>{{ item.calcul == 'D'?'Jours':'Heures' }}</td>
+                      <td class="text-end">{{ item.price | price }}</td>
+                      <td class="text-end">{{ item.min_price | price }}</td>
+                      <td class="text-end">
+                        <span class="pointer text-primary" (click)="editItem(i, item)">
+                          <i class="mdi mdi-pencil-box-outline"></i>
+                        </span>
+                        <span class="pointer text-danger ms-2" (click)="removeItem(i, item)">
+                          <i class="mdi mdi-trash-can-outline"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" (click)="addItem()">Ajouter un prix</button>
+            </div>
+
+            <div class="mt-3" *ngIf="form.get('type')?.value == 'MENU'">
+              <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                  <thead class="table-primary">
+                    <tr>
+                      <th>Produit</th>
+                      <th class="text-end">Qté</th>
+                      <th>Unité de mesure</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of menus; index as i">
+                      <td>{{ item.article.name }}</td>
+                      <td class="text-end">{{ item.qty }}</td>
+                      <td>{{ item.unit.name }}</td>
+                      <td class="text-end">
+                        <span class="pointer text-primary" (click)="editMenuItem(i, item)">
+                          <i class="mdi mdi-pencil-box-outline"></i>
+                        </span>
+                        <span class="pointer text-danger ms-2" (click)="removeMenuItem(i, item)">
+                          <i class="mdi mdi-trash-can-outline"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" (click)="addMenuItem()">Ajouter un élément</button>
+            </div>
+          </mdb-tab>
+          <mdb-tab title="Comptabilité">
+            <h6 class="border-bottom pb-2">Ventes et achats</h6>
+            <div class="row g-3">
+              <div class="col-md-6 col-12" *ngIf="form.get('can_sale')?.value == '1' || form.get('type')?.value == 'ROOM'">
+                <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte produit" formControlName="product_account_id">
+                  <ng-option *ngFor="let item of accounts" [value]="item.id">
+                    {{ item.account }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-6 col-6" *ngIf="form.get('type')?.value == 'STOCKABLE' || form.get('type')?.value == 'CONSUMABLE'">
+                <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte de charge" formControlName="expense_account_id">
+                  <ng-option *ngFor="let item of accounts" [value]="item.id">
+                    {{ item.account }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="mt-4" *ngIf="form.get('type')?.value == 'STOCKABLE' || form.get('type')?.value == 'CONSUMABLE' || form.get('type')?.value == 'MENU'">
+              <h6 class="border-bottom pb-2">Variation des stocks</h6>
+              <div class="row g-3">
+                <div class="col-md-6 col-12">
+                  <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte variation des stocks" formControlName="stock_account_id">
+                    <ng-option *ngFor="let item of accounts" [value]="item.id">
+                      {{ item.account }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-6 col-6">
+                  <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte des marchandises" formControlName="commodity_account_id">
+                    <ng-option *ngFor="let item of accounts" [value]="item.id">
+                      {{ item.account }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

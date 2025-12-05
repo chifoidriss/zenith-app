@@ -1,0 +1,75 @@
+<app-master title="Tableau de bord">
+
+  <div class="table-responsive bg-white mt-3">
+    <table class="table table-sm mb-0 table-hover" id="article_table">
+      <thead>
+      <tr class="table-primary">
+        <th scope="col">Chambres</th>
+        <th scope="col">status</th>
+        <th scope="col">Types</th>
+        <th scope="col">Prix</th>
+        <th scope="col">Facture</th>
+        <th scope="col">Arrivee</th>
+        <th scope="col">Depart</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let room of dashboard; index as i">
+        <th>{{ room.name }}</th>
+        <td>{{ room.statut }}</td>
+        <td>{{ room.type }}</td>
+        <th>{{ room.price | price}}</th>
+        <th>{{ room.facture}}</th>
+        <td>{{ room.arrival }}</td>
+        <td>{{ room.departure}}</td>
+        <td>
+          <div class="text-end">
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Option
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+
+                  <!-- Button trigger modal -->
+                  <a class="dropdown-item" type="button"  href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Details</a>
+
+                </li>
+                <li><a class="dropdown-item" href="">Reserver</a></li>
+                <li><a class="dropdown-item" href="#">Annuler reservation</a></li>
+                <li><a class="dropdown-item disabled" href="#">Modifier</a></li>
+              </ul>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">101</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Nombre de lit :</p><br>
+                    <p>Tv :</p><br>
+                    <p>climatisee :</p><br>
+                    <p>Eau chaude :</p><br>
+                    <p>Benoir :</p><br>
+                    <p>Bureau :</p><br>
+                    <p>Penderie :</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</app-master>

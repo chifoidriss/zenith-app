@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un paiement
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row gy-4 gx-3">
+      <div class="col-12">
+        <ng-select (search)="filterPartners($event)" placeholder="Client" appearance="outline" formControlName="partner_id" (change)="changePartner()">
+          <ng-option *ngFor="let item of partners" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <!-- <div class="col-12">
+        <ng-select placeholder="Produit" appearance="outline" formControlName="article_id" (change)="changeInvoice()">
+          <ng-option *ngFor="let item of invoices" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div> -->
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="reference" readonly="readonly" formControlName="reference" placeholder="Référence">
+          <label mdbLabel class="form-label" for="reference">Référence</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="date" class="form-control" id="payment_date" formControlName="payment_date" placeholder="Date du paiement">
+          <label mdbLabel class="form-label" for="payment_date">Date du paiement</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <ng-select appearance="outline" placeholder="Mode du paiement" formControlName="payment_method_id">
+          <ng-option *ngFor="let item of payment_methods" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12" *ngIf="devises.length > 1">
+        <ng-select appearance="outline" placeholder="Devise" formControlName="devise_id">
+          <ng-option *ngFor="let item of devises" [value]="item.id">
+            {{ item.name }} ({{ item.devise }})
+          </ng-option>
+        </ng-select>
+      </div>
+
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" [max]="data?.invoice?.total" class="form-control" id="amount" formControlName="amount" placeholder="Montant">
+          <label mdbLabel class="form-label" for="amount">Montant</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12" *ngIf="data?.invoice?.total > form.get('amount')?.value">
+        Montant restant à payer
+        <h6 class="fw-bold">{{ (data?.invoice?.due_amount - form.get('amount')?.value) | price }}</h6>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="store()" [disabled]="form.invalid || onLoad">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onLoad"></span>
+    Enregistrer
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

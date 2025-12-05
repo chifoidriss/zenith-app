@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>
+  Paramètres de l'application
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="mb-3">
+      <label for="language_id" class="form-label">Langues</label>
+      <select class="form-select" formControlName="language_id" id="language_id">
+        <option value="">Select</option>
+        <option *ngFor="let language of languages" [value]="language.id">{{ language.name }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="timezone_id" class="form-label">Fuseau horaire</label>
+      <select class="form-select" formControlName="timezone_id" id="timezone_id">
+        <option value="">Select</option>
+        <option *ngFor="let timezone of timezones" [value]="timezone.id">{{ timezone.name }}</option>
+      </select>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

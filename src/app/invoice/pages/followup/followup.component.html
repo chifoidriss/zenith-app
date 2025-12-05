@@ -1,0 +1,119 @@
+<!-- <app-master [title]="'Suivi '+title"> -->
+<app-master [title]="'Rapport de suivi'">
+  <div header class="row g-3 align-items-end">
+    <div class="col">
+      <div class="row row-cols-5 align-items-end">
+        <div class="col">
+          <ng-select [clearable]="false" [(ngModel)]="params.source">
+            <ng-option value="">Aucune source</ng-option>
+            <ng-option value="clients">Clients</ng-option>
+            <ng-option value="suppliers">Fournisseurs</ng-option>
+            <ng-option value="salaries">Salariés</ng-option>
+          </ng-select>
+        </div>
+        <div class="col">
+          <ng-select [clearable]="false" [(ngModel)]="params.follow">
+            <ng-option value="due">Factures en retards</ng-option>
+            <ng-option value="unpaid">Factures non soldées</ng-option>
+            <ng-option value="paid">Factures soldées</ng-option>
+            <ng-option value="best_by_total">Meilleurs par chiffres</ng-option>
+          </ng-select>
+        </div>
+        <div class="col">
+          <ng-select [clearable]="false" [(ngModel)]="params.date">
+            <ng-option value="today">Aujourd'hui</ng-option>
+            <ng-option value="yesterday">Hier</ng-option>
+            <ng-option value="week">Cette semaine</ng-option>
+            <ng-option value="week2">Ces 15 jours</ng-option>
+            <ng-option value="month">Ce mois</ng-option>
+            <ng-option value="trim">Ce trimestre</ng-option>
+            <ng-option value="sem">Ce semestre</ng-option>
+            <ng-option value="year">Cette année</ng-option>
+            <ng-option value="custom">Définir moi même</ng-option>
+          </ng-select>
+        </div>
+        <div class="col" *ngIf="params.date == 'custom'">
+          <mdb-form-control>
+            <input mdbInput type="date" class="form-control" [(ngModel)]="params.form_date" placeholder="Date du début">
+            <label mdbLabel class="form-label">Date du début</label>
+          </mdb-form-control>
+        </div>
+        <div class="col" *ngIf="params.date == 'custom'">
+          <mdb-form-control>
+            <input mdbInput type="date" class="form-control" [(ngModel)]="params.to_date" placeholder="Date de fin">
+            <label mdbLabel class="form-label">Date de fin</label>
+          </mdb-form-control>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <div class="text-end">
+        <button class="btn btn-primary" (click)="ngOnInit()">Filtrer</button>
+      </div>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="table fixed-first-column table-sm table-striped border mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th width="5px">#</th>
+            <th width="10px">Référence</th>
+            <th>Nom</th>
+            <th>Factures</th>
+            <!-- <th>Email</th> -->
+            <!-- <th>Adresse</th> -->
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.data; index as i">
+            <th>{{ data.from + i }}</th>
+            <td>
+              <a (click)="detailPartner(item)" class="pointer fw-bold">
+                {{ item.reference }}
+              </a>
+            </td>
+            <td>
+              <div class="">
+                {{ item.full_name }}
+                <span class="" *ngIf="item.phone && item.email">
+                  <br>
+                  <small>
+                    {{ item.phone }}
+                    <span *ngIf="item.email">({{ item.email }})</span>
+                  </small>
+                </span>
+              </div>
+            </td>
+            <td>
+              <div *ngIf="item.due_invoices">
+                {{ item.due_invoices?.length }} facture{{ item.due_invoices?.length>1?'s':'' }}
+                ({{ total(item.due_invoices) | price }})
+              </div>
+              <div *ngIf="item.unpaid_invoices">
+                {{ item.unpaid_invoices?.length }} facture{{ item.unpaid_invoices?.length>1?'s':'' }}
+                ({{ total(item.unpaid_invoices) | price }})
+              </div>
+              <div *ngIf="item.paid_invoices">
+                {{ item.paid_invoices?.length }} facture{{ item.paid_invoices?.length>1?'s':'' }}
+                ({{ total(item.paid_invoices) | price }})
+              </div>
+            </td>
+            <!-- <td></td> -->
+            <!-- <td class="text-end">
+              <span class="pointer text-primary" [routerLink]="'/partners/'+type+'/edit/'+item.id">
+                <i class="mdi mdi-pencil-box-outline"></i>
+              </span>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" [params]="params" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

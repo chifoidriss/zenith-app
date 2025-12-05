@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un produit
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row gy-4 gx-3">
+      <div class="col-12">
+        <ng-select placeholder="Produit" (search)="filter($event)" appearance="outline" formControlName="article_id">
+          <ng-option *ngFor="let item of articles" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <ng-select placeholder="Unité de stockage" appearance="outline" formControlName="unit_id">
+          <ng-option *ngFor="let item of units" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-sm-6- col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="qty_min" formControlName="qty_min" placeholder="Ex. 1">
+          <label mdbLabel class="form-label" for="qty_min">
+            Quantité minimum
+          </label>
+        </mdb-form-control>
+      </div>
+      <!-- <div class="col-sm-6- col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="price" formControlName="price" placeholder="Prix de vente">
+          <label mdbLabel class="form-label" for="price">Prix de vente</label>
+        </mdb-form-control>
+      </div> -->
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="store()" [disabled]="form.invalid || onload">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onload"></span>
+    Ajouter
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

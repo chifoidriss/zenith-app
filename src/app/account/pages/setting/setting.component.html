@@ -1,0 +1,50 @@
+<app-master title="Paramètres & Sécurité">
+  <div header class="">
+    <p>Gérez votre mot de passe, protégez votre compte et consulter des resources de sécurité supplémentaires.</p>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="card-header-title mb-0">Sécurité du mot de passe</h5>
+        <div class="">
+          <button class="btn btn-outline-primary" (click)="editPassword()">
+            Changer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      Aidez à sécuriser votre compte en utilisant un mot de passe plus fort. <br>
+      Dernière modification le 01/01/2023 à 20:00
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="card-header-title mb-0">Paramètres de l'application</h5>
+        <div class="">
+          <button class="btn btn-sm btn-outline-secondary" (click)="editSetting()">Modifier</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="">
+        <label class="form-label">Langue d'utilisateur <br><b>{{ auth.user.language || 'Français' }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Fuseau horaire <br><b>{{ auth.user.timezone || 'Africa/Douala' }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Affichage de date/heure <br><b>{{ auth.user.format_date || 'DD/MMM/YYYY HH:mm' }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Affichage des nombres <br><b>{{ auth.user.format_number || '## ###' }}</b></label>
+      </div>
+    </div>
+  </div>
+</app-master>
+

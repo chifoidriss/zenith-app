@@ -1,0 +1,167 @@
+<app-master [title]="title">
+  <div header class="">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex align-items-center">
+        <a class="btn btn-sm btn-primary text-nowrap" *ngIf="canWrite" [routerLink]="'/invoicing/'+invoice_type+'/'+type+'/new'">
+          <i class="mdi mdi-receipt-text-plus-outline" style="font-size: 14px; line-height: 14px;"></i>
+          Créer
+        </a>
+        <button class="btn btn-sm btn-warning text-nowrap ms-2" [disabled]="data.data.length == 0" (click)="export()">
+          <i class="mdi mdi-table-arrow-right" style="font-size: 14px; line-height: 14px;"></i>
+          Exporter
+        </button>
+        <button class="btn btn-sm btn-secondary text-nowrap ms-2" (click)="filter = !filter">
+          <i class="mdi mdi-tune" style="font-size: 14px; line-height: 14px;"></i>
+          Filtrer
+        </button>
+      </div>
+      <div class="ms-2">
+        <input type="search" class="form-control form-control-sm" placeholder="Rechercher...">
+      </div>
+    </div>
+    <div class="pt-2 mt-3" [ngClass]="{'d-none': !filter}">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <ng-select class="custom" placeholder="État des factures" [(ngModel)]="params.invoice_status">
+            <ng-option value="">Tout</ng-option>
+            <ng-option value="pending">En attentes</ng-option>
+            <ng-option value="active">Confirmées</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-3">
+          <ng-select class="custom" placeholder="État des paiements" [(ngModel)]="params.payment_status">
+            <ng-option value="">Tout</ng-option>
+            <ng-option value="unpaid">Non soldées</ng-option>
+            <ng-option value="paid">Complètement réglées</ng-option>
+          </ng-select>
+        </div>
+
+        <div class="col-md-3">
+          <div class="row g-2">
+            <div class="col-">
+              <ng-select class="custom" placeholder="Trier les résultats par" [(ngModel)]="params.order">
+                <ng-option value="updated_at">Dernière modification</ng-option>
+                <ng-option value="updated_at">Date de création</ng-option>
+                <ng-option value="billing_date">Date de facturation</ng-option>
+                <ng-option value="due_date">Date d'échéance</ng-option>
+                <ng-option value="total">Total à payer</ng-option>
+              </ng-select>
+            </div>
+            <!-- <div class="col">
+              <ng-select class="custom" placeholder="Classer par" [(ngModel)]="params.by">
+                <ng-option value="DESC">Décroissant</ng-option>
+                <ng-option value="ASC">Croissant</ng-option>
+              </ng-select>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="text-end">
+            <button class="btn btn-sm btn-danger" (click)="getInvoices()">Lancer</button>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-3">
+          <h6>Filtrer par interval de date</h6>
+          <div class="row gx-1">
+            <div class="col-6">
+              <mdb-form-control>
+                <input mdbInput type="date" class="form-control" [(ngModel)]="params.form_date" placeholder="Date du début">
+                <label mdbLabel class="form-label">Date du début</label>
+              </mdb-form-control>
+            </div>
+            <div class="col-6">
+              <mdb-form-control>
+                <input mdbInput type="date" class="form-control" [(ngModel)]="params.to_date" placeholder="Date de fin">
+                <label mdbLabel class="form-label">Date de fin</label>
+              </mdb-form-control>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="table-responsive">
+      <table id="invoices" class="table fixed-first-column table-sm table-striped border mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th width="5px">#</th>
+            <th width="10px">Référence</th>
+            <th class="text-capitalize">
+              {{ type == 'suppliers'?'Fournisseur':type == 'salaries'?'Employé':'Client' }}
+            </th>
+            <!-- <th>Date de facturation</th> -->
+            <th>Date</th>
+            <!-- <th>Date d'échéance</th> -->
+            <th>Échéance</th>
+            <th>Total à payer</th>
+            <th>Restant</th>
+            <th *ngIf="canWrite">Paiement</th>
+            <th *ngIf="canWrite">Statut</th>
+            <th *ngIf="canWrite" class="text-end">
+              <span class="pointer">
+                <i class="mdi mdi-tune-variant" style="font-size: 20px; line-height: 20px;"></i>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.data; index as i">
+            <th>{{ data.from + i }}</th>
+            <td>
+              <!-- <a [routerLink]="'/invoicing/'+invoice_type+'/'+type+'/edit/'+item.id" class="fw-bold"> -->
+              <a (click)="detailInvoice(item.id, i)" class="pointer fw-bold">
+                {{ item.reference }}
+              </a>
+            </td>
+            <td>
+              <a (click)="detailPartner(item.partner.id, i)" class="pointer text-dark fw-bold">
+                {{ item.partner.full_name }}
+              </a>
+            </td>
+            <td>{{ item.billing_date | locale }}</td>
+            <td>{{ item.due_date | locale }}</td>
+            <td>{{ item.total | price }}</td>
+            <td>{{ item.due_amount | price }}</td>
+            <td *ngIf="canWrite">
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-success" *ngIf="item.due_amount == 0">
+                <i class="mdi mdi-credit-card-check" style="font-size: 14px; line-height: 14px;"></i>
+                Soldée
+              </button>
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-warning ms-2-" (click)="addPayment(item, i)" *ngIf="item.status && item.due_amount > 0">
+                <i class="mdi mdi-credit-card-plus-outline me-1-" style="font-size: 14px; line-height: 14px;"></i>
+                Payer
+              </button>
+            </td>
+            <td *ngIf="canWrite">
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-success" *ngIf="item.status">
+                <i class="mdi mdi-checkbox-marked" style="font-size: 14px; line-height: 14px;"></i>
+                Validée
+              </button>
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-secondary border valid" #onLoad (click)="validate(item.id, i, onLoad)" *ngIf="!item.status">
+                <span class="spinner-border d-none me-1" style="width: 14px; height: 14px;"></span>
+                <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+                Valider
+              </button>
+            </td>
+            <td *ngIf="canWrite" class="text-end">
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-light text-primary" [routerLink]="'/invoicing/'+invoice_type+'/'+type+'/edit/'+item.id">
+                <i class="mdi mdi-pencil" style="font-size: 14px; line-height: 14px;"></i>
+              </button>
+              <button class="btn btn-sm py-1 px-2 text-nowrap btn-light text-danger ms-2" (click)="removeItem(i, item)" *ngIf="!item.status">
+                <i class="mdi mdi-trash-can-outline" style="font-size: 14px; line-height: 14px;"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" [params]="params" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

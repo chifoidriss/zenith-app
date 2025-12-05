@@ -1,0 +1,37 @@
+<app-master title="Notifications">
+  <div class="card p-2 mb-3" *ngFor="let notification of notifications">
+    <div class="d-flex">
+      <div class="avatar me-2">
+        <img src="assets/img/avatar.jpg" class="rounded-circle" height="36px" alt="">
+      </div>
+      <div class="flex-fill">
+        <h6 class="fw-bold mb-1">Nouveau commentaire</h6>
+        <p class="text-line-2">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Quam, est sit ut quidem iusto excepturi inventore nisi, ab reiciendis veniam sequi,
+          possimus ex maiores architecto. Illo quae temporibus nobis at.
+        </p>
+      </div>
+      <div class="d-flex flex-column">
+        <span>6h</span>
+        <div class="dropdown">
+          <span class="pointer">
+            <i class="mdi mdi-dots-vertical" style="font-size: 26px; line-height: 26px;"></i>
+          </span>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button class="dropdown-menu-item">Supprimer</button>
+            </li>
+            <li>
+              <button class="dropdown-menu-item">Marquer comme lue</button>
+            </li>
+            <li>
+              <button class="dropdown-menu-item">Préférences</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-master>
+

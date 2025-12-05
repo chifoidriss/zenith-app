@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>
+  Facture non validée
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <div *ngIf="data.data.source == 'HOSTING'">
+    <div class="card card-body py-2 border border-danger" *ngFor="let room of data?.errors">
+      <span class="text-danger">
+        La chambre <b>{{ room.article.name }}</b> a déjà une réservation en cours
+      </span>
+      <div class="d-flex">
+        <div class="me-1">
+          <i class="mdi mdi-account-box-outline" style="font-size: 50px; line-height: 50px;"></i>
+        </div>
+        <div class="">
+          <h6 class="m-0">{{ room.invoice.partner.name }}</h6>
+          <span>Type: {{ room.unit.name }}</span> <br>
+          <b>{{ room.start_date | locale }}</b> -
+          <b>{{ room.end_date | locale }}</b> <br>
+          <!-- <span>Total: {{ room.subtotal | price }}</span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="data.data.source == 'BAR'">
+    <div class="card card-body py-2 border border-danger" *ngFor="let item of data?.errors">
+      <span class="text-danger">Quantité non disponible</span>
+      <div class="">
+        <h6 class="m-0">{{ item.article?.name }}</h6>
+        <span>En stock: {{ item?.label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="data.data.source == 'RESTAURANT'">
+    <div class="card card-body py-2 border border-danger" *ngFor="let item of data?.errors">
+      <span class="text-danger">Quantité non disponible</span>
+      <div class="" *ngFor="let elt of item.articles">
+        <h6 class="m-0">{{ elt.article.name }}</h6>
+        <span>En stock: {{ elt.label }}</span>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

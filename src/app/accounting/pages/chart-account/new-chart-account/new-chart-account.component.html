@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Nouveau' }} numéro de compte
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-6">
+        <mdb-form-control>
+          <input mdbInput mask="separator" class="form-control" formControlName="code" placeholder="ex. 101000">
+          <label mdbLabel class="form-label">Numéro du compte</label>
+        </mdb-form-control>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label class="form-label">Type de compte</label>
+          <select class="form-control" formControlName="account_type_id">
+            <option *ngFor="let typeAccount of typeAccounts" [value]="typeAccount.id">
+              {{ typeAccount.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" formControlName="name" placeholder="ex. Actifs circulants">
+          <label mdbLabel class="form-label">Nom du compte</label>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <ul class="nav nav-tabs mt-3" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">
+          Comptabilité
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content pt-2">
+      <div class="tab-pane fade show active" id="home" role="tabpanel">
+        <mat-checkbox value="1" formControlName="allow_reconciliation">Autoriser le lettrage</mat-checkbox>
+        <mat-checkbox value="1" formControlName="deprecated">Obsolète</mat-checkbox>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="start">
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="createAccount()">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

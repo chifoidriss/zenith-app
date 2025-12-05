@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un prêt
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <ng-select (search)="filter($event)" appearance="outline" placeholder="Employé" formControlName="contract_id">
+          <ng-option *ngFor="let item of contracts" [value]="item.id">
+            {{ item.partner.full_name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="amount" formControlName="amount" placeholder="Montant">
+          <label mdbLabel class="form-label" for="amount">Montant à prêter</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="date" class="form-control" id="start_date" formControlName="start_date">
+          <label mdbLabel class="form-label" for="start_date">Date début</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="months" formControlName="months" placeholder="Mois">
+          <label mdbLabel class="form-label" for="months">Nb mois pour remettre</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="reason" formControlName="reason" placeholder="Raison">
+          <label mdbLabel class="form-label" for="reason">Raison/Motif</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || onload">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onload"></span>
+    Enregistrer
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

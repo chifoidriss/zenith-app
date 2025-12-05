@@ -1,0 +1,134 @@
+<app-master title="Grand livre">
+    <div header>
+      <div class="btn-links">
+        <div class="d-flex align-items-center" *ngIf="auth.can(['ACCOUNTING_W'])">
+          <button class="btn btn-sm btn-primary" routerLink="/accounting/entries/new">Créer</button>
+          <button class="btn btn-sm btn-warning text-nowrap ms-2" [disabled]="data.length == 0" (click)="export()">
+            <i class="mdi mdi-table-arrow-right" style="font-size: 14px; line-height: 14px;"></i>
+            Exporter
+          </button>
+          <button class="btn btn-sm btn-secondary text-nowrap ms-2" (click)="filter = !filter">
+            <i class="mdi mdi-tune" style="font-size: 14px; line-height: 14px;"></i>
+            Filtrer
+          </button>
+        </div>
+        <div class="pt-2 mt-3" [ngClass]="{'d-none': !filter}">
+          <div class="row g-3">
+            <div class="col-3">
+              <ng-select [clearable]="false" [(ngModel)]="params.source">
+                <ng-option value="">Tout</ng-option>
+                <ng-option value="hosting">Hébergement</ng-option>
+                <ng-option value="bar">Bar</ng-option>
+                <ng-option value="stock">Stock</ng-option>
+                <ng-option value="purchase">Achats</ng-option>
+                <ng-option value="salary">Paie & RH</ng-option>
+                <ng-option value="payment">Trésorerie</ng-option>
+              </ng-select>
+            </div>
+            <div class="col-3">
+              <ng-select [clearable]="false" [(ngModel)]="params.date">
+                <ng-option value="today">Aujourd'hui</ng-option>
+                <ng-option value="yesterday">Hier</ng-option>
+                <ng-option value="week">Cette semaine</ng-option>
+                <ng-option value="month">Ce mois</ng-option>
+                <ng-option value="year">Cette année</ng-option>
+                <ng-option value="custom">Définir moi même</ng-option>
+              </ng-select>
+            </div>
+            <div class="col" *ngIf="params.date == 'custom'">
+              <mdb-form-control>
+                <input mdbInput type="date" class="form-control" [(ngModel)]="params.form_date" placeholder="Date du début">
+                <label mdbLabel class="form-label">Date du début</label>
+              </mdb-form-control>
+            </div>
+            <div class="col" *ngIf="params.date == 'custom'">
+              <mdb-form-control>
+                <input mdbInput type="date" class="form-control" [(ngModel)]="params.to_date" placeholder="Date de fin">
+                <label mdbLabel class="form-label">Date de fin</label>
+              </mdb-form-control>
+            </div>
+
+            <div class="col">
+              <div class="text-end">
+                <button class="btn btn-sm btn-danger" (click)="ngOnInit()">Afficher</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-loader *ngIf="loading"></app-loader>
+
+    <div class="bg-white" *ngIf="!loading">
+      <div class="table-responsive">
+        <table class="table table-sm table-striped mb-0" id="data">
+          <thead class="table-primary">
+            <tr>
+              <!-- <th>Journal</th> -->
+              <th colspan="2">Compte</th>
+              <!-- <th>Partenaire</th> -->
+              <th>Référence</th>
+              <th>Libellé</th>
+              <th>Date</th>
+              <th class="border">Débit</th>
+              <th class="border">Crédit</th>
+              <!-- <th>Taxes</th> -->
+              <!-- <th>Article</th> -->
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of data" [id]="'invoice'+item.id" class="">
+              <!-- <td>{{ item.journal?.name }}</td> -->
+              <th width="5px" class="pe-0 fw-bold">
+                {{ item.chart_account?.account.split(' ')[0] }}
+              </th>
+              <td class="ps-1">{{ item.chart_account?.name }}</td>
+              <!-- <td>{{ item.partner?.name }}</td> -->
+              <td>
+                <b class="text-primary pointer" (click)="detail(item)">
+                  <!-- {{ item.invoice?.reference || item.payment?.reference || item.transfer?.reference }} -->
+                  {{ item.reference }}
+                </b>
+              </td>
+              <td>{{ item.label }}</td>
+              <td>{{ item.created_at | date:'d/MM/YYYY' }}</td>
+              <td class="border">{{ item.debit | price:'' }}</td>
+              <td class="border">{{ item.credit | price:'' }}</td>
+              <!-- <td></td> -->
+              <!-- <td>{{ item.article?.name }}</td> -->
+            </tr>
+          </tbody>
+
+          <!-- <tfoot style="background-color: 000;">
+            <tr class="">
+              <th colspan="4">Total</th>
+              <th>{{ result?.debit_total | price }}</th>
+              <th>{{ result?.credit_total | price }}</th>
+              <th colspan="3"></th>
+            </tr>
+          </tfoot> -->
+        </table>
+      </div>
+
+      <div class="card card-body py-1 pb-0 border-top sticky-bottom">
+        <div class="empty-data" *ngIf="data.length == 0">
+          <div class="mt-5">
+            <img src="assets/img/empty-1.svg" class="mb-3" height="220px">
+          </div>
+
+          <p class="fw-bold">
+            Aucune donnée à afficher
+          </p>
+
+          <div class="mt-5"></div>
+        </div>
+        <h6 class="fw-bold pb-0" *ngIf="data.length > 0">
+          {{ data.length }} résultats
+        </h6>
+      </div>
+
+      <!-- <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination> -->
+    </div>
+  </app-master>

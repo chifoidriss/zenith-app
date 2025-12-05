@@ -1,0 +1,16 @@
+<div mat-dialog-content>
+  <div class="d-flex align-items-start" role="alert">
+    <div class="flex-fill me-2">
+      <div class="" *ngIf="!data?.errors?.length">
+        {{ data?.message }}
+      </div>
+
+      <ol type="1" class="ps-2" *ngIf="data?.errors?.length > 0">
+        <li *ngFor="let error of data?.errors">{{ error }}</li>
+      </ol>
+    </div>
+    <span class="icon" mat-dialog-close cdkFocusInitial>
+      <i class="uil-times"></i>
+    </span>
+  </div>
+</div>

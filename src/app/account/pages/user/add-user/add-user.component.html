@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un utilisateur
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="last_name">Nom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="Prénom">
+          <label mdbLabel class="form-label" for="first_name">Prénom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6- col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="title" formControlName="title" placeholder="Titre">
+          <label mdbLabel class="form-label" for="title">Titre</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="email" class="form-control" id="email" formControlName="email" placeholder="email">
+          <label mdbLabel class="form-label" for="email">Email</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6 col-12">
+        <mdb-form-control>
+          <input mdbInput type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Numéro de téléphone">
+          <label mdbLabel class="form-label" for="phone">Numéro de téléphone</label>
+        </mdb-form-control>
+      </div>
+      <!-- <div class="col-md-6- col-12">
+        <ng-select placeholder="Roles" appearance="outline" [multiple]="true" formControlName="roles_id">
+          <ng-option *ngFor="let item of roles" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div> -->
+      <div class="col-12">
+        <mat-checkbox formControlName="status" value="1">Active</mat-checkbox>
+      </div>
+    </div>
+  </form>
+
+  <div class="col-12- mt-3">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover border- permissions">
+        <thead class="table-primary">
+          <tr>
+            <th>Permissions</th>
+            <th width="50px" class="text-end">Lecture</th>
+            <th width="50px" class="text-end">Écriture</th>
+            <th width="50px" class="text-end">Aucune</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of permissions">
+            <td>{{ item.name }}</td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <input type="radio" class="form-check pointer" [checked]="check(item.code) == 1" [name]="item.code" [id]="item.code" value="1">
+              </div>
+            </td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <input type="radio" class="form-check pointer" [checked]="check(item.code) == 2" [name]="item.code" [id]="item.code" value="2">
+              </div>
+            </td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <input type="radio" class="form-check pointer" [checked]="check(item.code) == 0" [name]="item.code" [id]="item.code" value="">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || isLoad">
+    <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="isLoad"></span>
+    Enregistrer
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

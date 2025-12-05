@@ -1,0 +1,173 @@
+<app-master [title]="(id?'Modifier ':'Nouveau ') +title">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button type="button" class="btn btn-sm btn-primary" [disabled]="form.invalid || isLoad" (click)="store()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="isLoad"></span>
+        Enregistrer
+      </button>
+      <button type="button" class="btn btn-sm btn-danger ms-2" navBack>Annuler</button>
+    </div>
+    <div class="">
+      <!-- <input type="search" class="form-control form-control-sm" placeholder="Rechercher..."> -->
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="card" *ngIf="!loading">
+    <!-- <div class="card-header"></div> -->
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3-">
+          <div class="col-md-6- col-12">
+            <div class="row g-3">
+              <div class="col-12">
+                <mat-radio-group formControlName="partner_type">
+                  <mat-radio-button value="PARTICULAR">Particulier</mat-radio-button>
+                  <mat-radio-button value="SOCIETY">Société</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="">
+                  <label mdbLabel class="form-label">Nom</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="">
+                  <label mdbLabel class="form-label">Prénom</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12" *ngIf="form.get('partner_type')?.value == 'PARTICULAR'">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" placeholder="ex. Optima" formControlName="society_name">
+                  <label mdbLabel class="form-label">Entreprise</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" id="post" formControlName="post" placeholder="Directeur Général">
+                  <label mdbLabel class="form-label">Profession</label>
+                </mdb-form-control>
+              </div>
+
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="form-group">
+                  <label class="form-label">Sexe</label>
+                  <select class="form-control" formControlName="genre">
+                    <option value="M">Masculin</option>
+                    <option value="F">Féminin</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <ng-select placeholder="Nationalité" appearance="outline" formControlName="nationality_id">
+                  <ng-option *ngFor="let item of countries" [value]="item.id">
+                    {{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-md-3 col-sm-6 col-12">
+                <div class="form-group">
+                  <label class="form-label">Type de pièce</label>
+                  <select class="form-control" formControlName="identity_type">
+                    <option value="CNI">CNI</option>
+                    <option value="PASSPORT">Passport</option>
+                    <option value="DRIVING_LICENSE">Permis de conduire</option>
+                    <option value="RESIDENCE_CARD">Carte de séjour</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="identity_number" placeholder="">
+                  <label mdbLabel class="form-label">Numéro de pièce</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" formControlName="identity_delivery_date" placeholder="">
+                  <label mdbLabel class="form-label">Date de délivrance</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="identity_delivery_place" placeholder="">
+                  <label mdbLabel class="form-label">Lieu de délivrance</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" formControlName="birthday" placeholder="">
+                  <label mdbLabel class="form-label">Date de naissance</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="birthplace" placeholder="Douala">
+                  <label mdbLabel class="form-label">Lieu de naissance</label>
+                </mdb-form-control>
+              </div>
+
+              <div class="col-md-3 col-sm-6 col-12">
+                <ng-select placeholder="Pays de résidence" appearance="outline" formControlName="country_id">
+                  <ng-option *ngFor="let item of countries" [value]="item.id">
+                    {{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="city" placeholder="Douala">
+                  <label mdbLabel class="form-label">Ville de résidence</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="tel" class="form-control" formControlName="phone" placeholder="6__ ___ ___">
+                  <label mdbLabel class="form-label">Numéro téléphone</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="email" class="form-control" formControlName="email" placeholder="example@mail.com">
+                  <label mdbLabel class="form-label">Adresse email</label>
+                </mdb-form-control>
+              </div>
+              <!-- <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="reference" readonly="readonly" placeholder="XXX-XXXX">
+                  <label mdbLabel class="form-label">Référence interne</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-3 col-sm-6 col-12">
+                <mdb-form-control>
+                  <input mdbInput type="text" class="form-control" formControlName="barcode" placeholder="XXXX XXXX">
+                  <label mdbLabel class="form-label">Code-barres</label>
+                </mdb-form-control>
+              </div> -->
+            </div>
+          </div>
+
+          <!-- <div class="col-md-4 col-12">
+            <app-image [src]="imageUrl" (file)="fileData = $event"></app-image>
+          </div> -->
+        </div>
+
+        <mdb-tabs>
+          <mdb-tab title="Comptabilité">
+            <div class="">
+              <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte par défaut" formControlName="default_account_id">
+                <ng-option *ngFor="let item of accounts" [value]="item.id">
+                  {{ item.account }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

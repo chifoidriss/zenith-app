@@ -1,0 +1,80 @@
+<app-master title="Plan comptable">
+  <div header>
+    <div class="btn-links">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="">
+          <button class="btn btn-sm btn-primary" (click)="create()">Créer</button>
+        </div>
+        <div class="">
+          <mdb-form-control>
+            <input mdbInput type="search" (keyup)="filterAccount($event)" class="form-control form-control-sm" placeholder="Filtrer par classe">
+            <label mdbLabel class="form-label">Filtrer par classe</label>
+          </mdb-form-control>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="bg-white" *ngIf="!loading">
+    <div class="table-responsive">
+      <table class="table fixed-first-column table-sm table-striped mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th>
+              #
+            </th>
+            <!-- <th width="10px">Numéro</th> -->
+            <th colspan="2">Compte</th>
+            <th>Type</th>
+            <!-- <th>Autoriser le lettrage?</th> -->
+            <!-- <th>Obsolete?</th> -->
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let chart_account of data?.data; index as i">
+            <td>
+              {{ data.from + i }}
+            </td>
+            <td width="5px">
+              <b class="text-blue pointer" (click)="update(chart_account, i)">
+                {{ chart_account.account.split(' ')[0] }}
+              </b>
+            </td>
+            <td>
+              <b class="text-blue pointer" (click)="update(chart_account, i)">
+                {{ chart_account.name }}
+              </b>
+            </td>
+            <td>{{ chart_account.account_type.name }}</td>
+
+            <!-- <td>
+              <mat-checkbox color="primary" #allow
+                [checked]="chart_account.allow_reconciliation?true:false"
+                (change)="deprecated_and_allow('allow',chart_account.id)">
+                {{ allow.checked?'Oui':'Non' }}
+              </mat-checkbox>
+            </td> -->
+            <!-- <td>
+              <mat-checkbox color="primary" #deprecated
+                [checked]="chart_account.deprecated?true:false"
+                (change)="deprecated_and_allow('deprecated',chart_account.id)">
+                {{ deprecated.checked?'Oui':'Non' }}
+              </mat-checkbox>
+            </td> -->
+            <!-- <td>
+              <div class="">
+                <button mat-stroked-button color="primary" (click)="update(chart_account, i)">Configurer</button>
+              </div>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination [data]="data" (onPageEvent)="data = $event"></app-pagination>
+  </div>
+</app-master>

@@ -1,0 +1,44 @@
+.user-avatar {
+  height: 140px;
+  width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #EEE;
+  padding: .25rem;
+
+  &:hover {
+    .icons {
+      background-color: rgb(0, 0, 0, .3);
+      color: #FFF;
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+
+  .icons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 .25rem;
+    display: flex;
+    justify-content: space-between;
+    color: #DDD;
+    background-color: rgb(0, 0, 0, .05);
+
+    .icon {
+      cursor: pointer;
+      padding: .25rem .5rem;
+
+      i {
+        font-size: 22px;
+      }
+    }
+  }
+}

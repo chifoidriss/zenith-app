@@ -1,0 +1,185 @@
+<h2 mat-dialog-title *ngIf="partner">
+  <b>{{ partner.reference }}</b>
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="row g-3 mb-3">
+      <div class="col-md-5 col-12">
+        <div class="card card-body">
+          <div class="d-flex align-items-start w-100">
+            <div class="avatar border rounded p-0-">
+              <img src="assets/img/image-outline.svg" height="60px" width="auto" alt="">
+            </div>
+            <div class="flex-fill ms-2">
+              <h6>{{ partner.full_name }}</h6>
+              <p class="mb-0">
+                <span *ngIf="partner.phone">
+                  {{ partner.phone }} <br>
+                </span>
+                <span class="mb-2" *ngIf="partner.email">
+                  {{ partner.email }}
+                </span>
+              </p>
+              <p class="mb-0">Chiffre d'affaires</p>
+              <h6 class="fw-bold">
+                {{ (paid_amount+paid_amount_refund-due_amount+due_amount_refund) | price }}
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 col-12">
+        <div class="row g-3">
+          <div class="col-md-6 col-12">
+            <div class="card card-body">
+              <p class="mb-0">Chiffre versé</p>
+              <h6 class="fw-bold">{{ paid_amount | price }}</h6>
+              <p class="mb-0">Chiffre à verser</p>
+              <h6 class="fw-bold">{{ due_amount | price }}</h6>
+            </div>
+          </div>
+          <div class="col-md-6 col-12">
+            <div class="card card-body">
+              <p class="mb-0">Chiffre perçu</p>
+              <h6 class="fw-bold">{{ paid_amount_refund | price }}</h6>
+              <p class="mb-0">Chiffre à percevoir</p>
+              <h6 class="fw-bold">{{ due_amount_refund | price }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mdb-tabs>
+      <mdb-tab title="Factures non soldées">
+        <div class="table-responsive">
+          <table class="table fixed-first-column table-sm table-striped border mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th width="5px">#</th>
+                <th width="10px">Référence</th>
+                <th>Date</th>
+                <th>Échéance</th>
+                <th>Total à payer</th>
+                <th>Restant</th>
+                <!-- <th>Paiement</th> -->
+                <th>Statut</th>
+                <!-- <th class="text-end">
+                  <span class="pointer">
+                    <i class="mdi mdi-tune-variant" style="font-size: 20px; line-height: 20px;"></i>
+                  </span>
+                </th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filter('unpaid'); index as i">
+                <th>{{ i+1 }}</th>
+                <td>
+                  <a (click)="detailInvoice(item, i)" class="pointer fw-bold">
+                    {{ item.reference }}
+                  </a>
+                </td>
+                <td>{{ item.billing_date | locale }}</td>
+                <td>{{ item.due_date | locale }}</td>
+                <td>{{ item.total | price }}</td>
+                <td>{{ item.due_amount | price }}</td>
+                <!-- <td>
+                </td> -->
+                <td>
+                  <span class="badge text-success" *ngIf="item.status && item.due_amount == 0">
+                    <i class="mdi mdi-credit-card-check" style="font-size: 14px; line-height: 14px;"></i>
+                    Soldée
+                  </span>
+                  <span class="badge text-warning border- pointer ms-2-" (click)="addPayment(item, i)" *ngIf="item.status && item.due_amount > 0">
+                    <i class="mdi mdi-credit-card-plus-outline me-1-" style="font-size: 14px; line-height: 14px;"></i>
+                    Payer
+                  </span>
+                  <!-- <span class="badge text-success" *ngIf="item.status && item.due_amount == 0">
+                    <i class="mdi mdi-checkbox-marked" style="font-size: 14px; line-height: 14px;"></i>
+                    Validée
+                  </span> -->
+                  <span class="badge text-secondary border pointer valid" (click)="validate(item.id, i)" *ngIf="!item.status">
+                    <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+                    Valider
+                  </span>
+                </td>
+                <!-- <td class="text-end">
+                  <span class="pointer text-primary" [routerLink]="'/invoicing/'+invoice_type+'/'+type+'/edit/'+item.id">
+                    <i class="mdi mdi-pencil-box-outline"></i>
+                  </span>
+                  <span class="pointer text-danger ms-2" (click)="removeItem(i, item)" *ngIf="!item.status">
+                    <i class="mdi mdi-trash-can-outline"></i>
+                  </span>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mdb-tab>
+      <mdb-tab title="Factures soldées">
+        <div class="table-responsive">
+          <table class="table fixed-first-column table-sm table-striped border mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th width="5px">#</th>
+                <th width="10px">Référence</th>
+                <!-- <th>Date de facturation</th> -->
+                <th>Date</th>
+                <!-- <th>Date d'échéance</th> -->
+                <th>Échéance</th>
+                <th>Total à payer</th>
+                <th>Restant</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filter('paid'); index as i">
+                <th>{{ i+1 }}</th>
+                <td>
+                  <!-- <a [routerLink]="'/invoicing/'+invoice_type+'/'+type+'/edit/'+item.id" class="fw-bold"> -->
+                  <a (click)="detailInvoice(item, i)" class="pointer fw-bold">
+                    {{ item.reference }}
+                  </a>
+                </td>
+                <td>{{ item.billing_date | locale }}</td>
+                <td>{{ item.due_date | locale }}</td>
+                <td>{{ item.total | price }}</td>
+                <td>{{ item.due_amount | price }}</td>
+                <td>
+                  <span class="badge text-success" *ngIf="item.status && item.due_amount == 0">
+                    <i class="mdi mdi-credit-card-check" style="font-size: 14px; line-height: 14px;"></i>
+                    Soldée
+                  </span>
+                  <span class="badge text-warning border- pointer ms-2-" (click)="addPayment(item, i)" *ngIf="item.status && item.due_amount > 0">
+                    <i class="mdi mdi-credit-card-plus-outline me-1-" style="font-size: 14px; line-height: 14px;"></i>
+                    Payer
+                  </span>
+                  <span class="badge text-secondary border pointer valid" (click)="validate(item.id, i)" *ngIf="!item.status">
+                    <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+                    Valider
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mdb-tab>
+    </mdb-tabs>
+  </div>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+<mat-dialog-actions *ngIf="data">
+  <!-- <button mat-raised-button color="accent" (click)="print()">
+    <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+    Imprimer
+  </button> -->
+
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

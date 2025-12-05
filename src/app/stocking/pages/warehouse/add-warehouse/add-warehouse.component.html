@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un entrepôt
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom">
+          <label mdbLabel class="form-label" for="name">Nom</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="description" formControlName="description" placeholder="Description">
+          <label mdbLabel class="form-label" for="description">Description</label>
+        </mdb-form-control>
+      </div>
+    </div>
+
+    <!-- <mdb-tabs>
+      <mdb-tab title="Comptabilité">
+        <div class="mb-3">
+          <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte variation des stocks" formControlName="stock_account_id">
+            <ng-option *ngFor="let item of accounts" [value]="item.id">
+              {{ item.account }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="">
+          <ng-select appearance="outline" (search)="filter($event)" placeholder="Compte des marchandises" formControlName="commodity_account_id">
+            <ng-option *ngFor="let item of accounts" [value]="item.id">
+              {{ item.account }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </mdb-tab>
+    </mdb-tabs> -->
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

@@ -1,0 +1,18 @@
+<app-auth-layout name="auth" title="Vérification d'email">
+  <div class="alert alert-success text-center" *ngIf="status == 'verification-link-sent'">
+    Un nouveau lien de vérification par e-mail vous a été envoyé par e-mail !
+  </div>
+
+  <h3>Vérifier l'adresse e-mail</h3>
+  <p>Vérifier votre boite mail et cliquer sur le lien pour la confirmation de votre compte.</p>
+  <div class="text-center text-lg-start mt-2 pt-2">
+    <button type="submit" class="btn btn-primary btn-lg w-100" (click)="onSubmit()">
+      Renvoyer l'e-mail de vérification
+    </button>
+    <p class="small fw-bold mt-3 pt-1 mb-0">
+      Des problèmes avec le processus de vérification ou une mauvaise adresse e-mail ?<br>
+      Veuillez vous inscrire ou connecter avec adresse e-mail.
+      <a class="link-danger pointer" (click)="auth.logout()">Inscrivez-vous ici !</a>
+    </p>
+  </div>
+</app-auth-layout>

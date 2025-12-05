@@ -1,0 +1,41 @@
+<app-header [apps]="apps" [appName]="APP_NAME" [logo]="null"></app-header>
+
+<section class="hero">
+  <div class="container-fluid">
+    <div class="row g-3 align-items-center text-md-start text-center">
+      <div class="col-md-5">
+        <h2 class="">
+          Hey toi ! Tu veux donner un coup de boost à ton activité de façon professionnelle ?
+        </h2>
+        <p class="fw-bold mt-3">
+          Alors, j'ai une super nouvelle pour toi ! 🚀
+          <!-- 1000+ professional Courses for Your Career -->
+        </p>
+        <p>
+          ⚡️ <b>{{ APP_NAME }}</b> est un <b>Système de Gestion Commerciale</b>
+          conçue pour t'aider à gérer tous les aspects de ton activité tels que les <b>Ventes</b>,
+          les <b>Achats</b>, le <b>Stock</b> et la <b>Facturation</b>
+        </p>
+      </div>
+
+      <div class="col-md-7">
+        <!-- <img src="assets/img/05.svg" class="w-100" alt=""> -->
+        <div class="row row-cols-md-5 row-cols-sm-3 row-cols-2 g-2">
+          <div class="col" *ngFor="let item of menu">
+            <div class="card card-body p-2 text-center pointer" [routerLink]="item.link">
+              <div class="">
+                <i [class]="item.icon" style="font-size: 50px; line-height: 50px;"></i>
+              </div>
+              <h6 class="text-primary- mt-1 fw-bold">{{ item.name }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<app-footer [canHide]="true"></app-footer>
+
+<!-- <app-tabs></app-tabs> -->

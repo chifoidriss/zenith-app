@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} une line d'écriture
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row gy-4 gx-3">
+      <div class="col-12">
+        <ng-select appearance="outline" placeholder="Compte" formControlName="chart_account_id" (search)="filter($event)" (change)="changeAccount()">
+          <ng-option *ngFor="let item of accounts" [value]="item.id">
+            {{ item.account }}
+          </ng-option>
+        </ng-select>
+      </div>
+
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="label" formControlName="label" placeholder="Libellé">
+          <label mdbLabel class="form-label" for="label">Libellé</label>
+        </mdb-form-control>
+      </div>
+
+      <div class="col-md-6- col-6">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="debit" formControlName="debit" placeholder="Débit">
+          <label mdbLabel class="form-label" for="debit">Débit</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-md-6- col-6">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="credit" formControlName="credit" placeholder="Crédit">
+          <label mdbLabel class="form-label" for="credit">Crédit</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="store()" [disabled]="form.invalid || !account">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

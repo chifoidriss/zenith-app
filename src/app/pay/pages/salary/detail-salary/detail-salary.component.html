@@ -1,0 +1,148 @@
+<h2 mat-dialog-title>
+  Bulletin de paie
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="" *ngIf="!loading">
+    <div class="row- mb-2">
+      Paie du <b>{{ salary.start_date | locale }}</b> au <b>{{ salary.end_date | locale }}</b> <br>
+      Employé: <b>{{ salary.partner.full_name }}</b> <br>
+      Fonction: <b>{{ salary.contract.post.name }}</b>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm- border mb-0">
+        <thead class="table-primary-">
+          <tr>
+            <th colspan="2">TAUX DE RÉMUNÉRATION</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mensuel Journalier Horaire</td>
+            <td class="text-end">{{ salary.salary_total | price }}</td>
+          </tr>
+        </tbody>
+
+        <thead class="table-primary-">
+          <tr>
+            <th colspan="2">PRIMES</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of salary.bonuses; index as i">
+            <td>{{ item.name }}</td>
+            <td class="text-end">{{ item.pivot.value | price }}</td>
+          </tr>
+          <tr>
+            <td>Congés payés</td>
+            <td class="text-end">{{ salary.leave_total | price }}</td>
+          </tr>
+        </tbody>
+
+        <thead class="table-primary-">
+          <tr>
+            <th colspan="2">INDEMNITÉS</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of salary.indemnities; index as i">
+            <td>{{ item.name }}</td>
+            <td class="text-end">{{ item.pivot.value | price }}</td>
+          </tr>
+          <tr>
+            <th>MONTANT RÉMUNÉRATION BRUTE</th>
+            <th class="text-end">{{ salary.total_salary | price }}</th>
+          </tr>
+        </tbody>
+
+        <thead class="table-primary-">
+          <tr>
+            <th colspan="2">IMPÔTS</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IRPP</td>
+            <td class="text-end">{{ salary.tax_irpp_total | price }}</td>
+          </tr>
+          <tr>
+            <td>CAC</td>
+            <td class="text-end">{{ salary.tax_cac_total | price }}</td>
+          </tr>
+          <tr>
+            <td>CFC</td>
+            <td class="text-end">{{ salary.tax_cfc_total | price }}</td>
+          </tr>
+          <tr>
+            <td>CRTV</td>
+            <td class="text-end">{{ salary.tax_crtv_total | price }}</td>
+          </tr>
+          <tr>
+            <th>TOTAL IMPÔTS</th>
+            <th class="text-end">{{ salary.total_tax | price }}</th>
+          </tr>
+        </tbody>
+
+        <thead class="table-primary-">
+          <tr>
+            <th colspan="2">RETENUES</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Acompte sur salaire</td>
+            <td class="text-end">{{ salary.salary_advance | price }}</td>
+          </tr>
+          <tr>
+            <td>Prêts</td>
+            <td class="text-end">{{ salary.salary_loan | price }}</td>
+          </tr>
+          <tr>
+            <td>Saisie et opposition</td>
+            <td class="text-end">{{ salary.absence_total | price }}</td>
+          </tr>
+          <tr>
+            <td>PVID</td>
+            <td class="text-end">{{ salary.pvid_total | price }}</td>
+          </tr>
+          <tr>
+            <td>Taxe communale</td>
+            <td class="text-end">{{ salary.tax_municipal_total | price }}</td>
+          </tr>
+          <tr>
+            <td>Retenue syndicale</td>
+            <td class="text-end">{{ salary.syndical_total | price }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="table-primary-">
+          <tr>
+            <th>TOTAL RETENUES</th>
+            <th class="text-end">{{ salary.total_retenu | price }}</th>
+          </tr>
+          <tr>
+            <th>NET À PAYER</th>
+            <th class="text-end">{{ salary.total_salary_net | price }}</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions *ngIf="!loading">
+  <button mat-raised-button color="accent" (click)="print()">
+    <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+    Imprimer
+  </button>
+
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

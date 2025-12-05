@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} un produit du menu
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row gy-4 gx-3">
+      <div class="col-12">
+        <ng-select (search)="filter($event)" appearance="outline" placeholder="Produit" formControlName="article_id">
+          <ng-option *ngFor="let item of articles" [value]="item.id">
+            {{ item.name }}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label class="form-label">Unité de mesure</label>
+          <select class="form-control" formControlName="unit_id">
+            <option *ngFor="let item of units" [value]="item.id">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="number" class="form-control" id="qty" formControlName="qty" placeholder="Quantité">
+          <label mdbLabel class="form-label" for="qty">Quantité</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="store()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

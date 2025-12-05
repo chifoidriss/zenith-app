@@ -1,0 +1,124 @@
+<app-master [title]="(id?'Modifier':'Ajouter')+' un transfert'">
+  <div header class="d-flex justify-content-between">
+    <div class="">
+      <button class="btn btn-primary" [disabled]="invalid()" (click)="store()">
+        <span class="spinner-border me-1" style="width: 14px; height: 14px;" *ngIf="onLoad"></span>
+        Enregistrer
+      </button>
+      <button class="btn btn-outline-danger ms-2" navBack>Retour</button>
+    </div>
+  </div>
+
+  <app-loader *ngIf="loading"></app-loader>
+
+  <div class="card mb-4" *ngIf="!loading">
+    <div class="card-header" *ngIf="id">
+      <div class="d-flex justify-content-between">
+        <div class="">
+          <button class="btn btn-sm btn-secondary" (click)="print()">
+            <i class="mdi mdi-printer" style="font-size: 14px; line-height: 14px;"></i>
+            Imprimer
+          </button>
+          <button class="btn btn-sm btn-info ms-2" *ngIf="!invoice?.status" (click)="validate()">
+            <i class="mdi mdi-checkbox-marked-outline" style="font-size: 14px; line-height: 14px;"></i>
+            Valider
+          </button>
+          <!-- <button class="btn btn-sm btn-warning ms-2" (click)="duplicateInvoice()">
+            <i class="mdi mdi-text-box-multiple-outline" style="font-size: 14px; line-height: 14px;"></i>
+            Dupliquer
+          </button> -->
+        </div>
+        <div class=""></div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-6 col-12">
+            <div class="row g-3">
+              <!-- <div class="col-12">
+                <ng-select class="custom" appearance="outline" placeholder="Facturer à" formControlName="partner_id">
+                  <ng-option *ngFor="let item of partners" [value]="item.id">
+                    {{ item.full_name }}
+                  </ng-option>
+                </ng-select>
+              </div> -->
+              <div class="col-12">
+                <ng-select [readonly]="items.length > 0" appearance="outline" placeholder="Entrepôt d'origine" formControlName="origin_warehouse_id">
+                  <ng-option *ngFor="let item of warehouses" [value]="item.id">
+                    {{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-12">
+                <ng-select appearance="outline" placeholder="Entrepôt destination" formControlName="destination_warehouse_id">
+                  <ng-option *ngFor="let item of warehouses" [value]="item.id">
+                    {{ item.name }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-6">
+            <div class="row g-3">
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" placeholder="" formControlName="billing_date">
+                  <label mdbLabel class="form-label">Date d'opération</label>
+                </mdb-form-control>
+              </div>
+              <div class="col-md-6- col-12">
+                <mdb-form-control>
+                  <input mdbInput type="date" class="form-control" placeholder="" formControlName="due_date">
+                  <label mdbLabel class="form-label">Date d'échéance</label>
+                </mdb-form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <mdb-tabs>
+          <mdb-tab>
+            <ng-template mdbTabTitle>
+              <span><i class="mdi mdi-shopping-outline me-2"></i>Articles</span>
+            </ng-template>
+            <div class="table-responsive">
+              <table class="table border- table-striped table-sm">
+                <thead class="table-primary">
+                  <tr>
+                    <th>Produit</th>
+                    <th class="text-end">Qté</th>
+                    <th>UdM</th>
+                    <!-- <th class="text-end">Prix</th> -->
+                    <th width="50px" *ngIf="!invoice?.status"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of items; index as i">
+                    <td>{{ item.article?.name }}</td>
+                    <td class="text-end">{{ item.qty }}</td>
+                    <td>{{ item.unit.name }}</td>
+                    <!-- <td class="text-end">{{ item.price | price }}</td> -->
+                    <td class="text-end" *ngIf="!invoice?.status">
+                      <span class="pointer text-primary" (click)="editItem(i, item)">
+                        <i class="mdi mdi-pencil-box-outline"></i>
+                      </span>
+                      <span class="pointer text-danger ms-2" (click)="removeItem(i, item)">
+                        <i class="mdi mdi-trash-can-outline"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button class="btn btn-sm btn-outline-info" *ngIf="!invoice?.status" [disabled]="!form.get('origin_warehouse_id')?.value" (click)="addItem()">
+              Ajouter un produit
+            </button>
+          </mdb-tab>
+        </mdb-tabs>
+      </form>
+    </div>
+  </div>
+</app-master>

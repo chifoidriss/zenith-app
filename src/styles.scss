@@ -1,1 +1,76 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// @import '@fortawesome/fontawesome-free/css/all.css';
+// @import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
+
+/* You can add global styles to this file, and also import other style files */
+@import 'scss/general';
+@import 'scss/select';
+
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif !important;
+  background-color: #EEEC;
+  font-size: .875rem !important;
+}
+
+.dropdown-menu-end {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.btn {
+  text-transform: unset;
+}
+
+.form-check-label {
+  display: unset;
+}
+
+.card {
+  // border-radius: 0;
+  border-radius: 5px;
+
+  .card-body, &.card-body, .card-header, &.card-header, .card-footer, &.card-footer {
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
+}
+
+.dropdown {
+  .dropdown-menu {
+    border-radius: 5px;
+
+    .dropdown-item {
+      border-radius: 5px !important;
+    }
+  }
+}
+
+.ng-select {
+  border: 0px !important;
+  min-height: 50px !important;
+  border-radius: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: -8px !important;
+
+  .ng-select-container  {
+    min-height: 50px !important;
+    border-radius: 0 !important;
+  }
+
+  &::ng-deep .ng-select-container  {
+    min-height: 50px !important;
+    border-radius: 0 !important;
+  }
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  line-height: 2.2rem !important;
+  min-height: 2.2rem !important;
+}
+
+

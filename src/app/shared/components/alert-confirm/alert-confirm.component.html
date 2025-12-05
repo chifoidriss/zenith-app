@@ -1,0 +1,10 @@
+
+<!-- <h1 mat-dialog-title></h1> -->
+<div mat-dialog-content>
+  <p *ngIf="data" [innerHTML]="data"></p>
+  <p *ngIf="!data">Voulez-vous effectuer cette action ?</p>
+</div>
+<div align="start" class="px-3" mat-dialog-actions>
+  <button mat-stroked-button color="primary" [mat-dialog-close]="true">Oui</button>
+  <button mat-stroked-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>Non</button>
+</div>

@@ -1,0 +1,12 @@
+.table {
+  th, td {
+    padding: .4rem .25rem;
+    white-space: nowrap;
+  }
+}
+
+.top-sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}

@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>
+  {{ data?.id ? 'Modifier':'Ajouter' }} une unité de mesure
+
+  <button mat-dialog-close class="btn-close"></button>
+</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content class="mat-typography-">
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <!-- <div class="col-12">
+        <mat-radio-group formControlName="role">
+          <mat-radio-button value="MAIN">Particulier</mat-radio-button>
+          <mat-radio-button value="CHILD">Société</mat-radio-button>
+        </mat-radio-group>
+      </div> -->
+      <!-- <div class="col-12" *ngIf="form.get('role')?.value == 'CHILD'">
+        <div class="form-group">
+          <label class="form-label">Catégorie d'unité de mesure</label>
+          <select class="form-control" formControlName="parent_id">
+            <option *ngFor="let category of unitGroups" [value]="category.id">
+              {{ category.full_name }}
+            </option>
+          </select>
+        </div>
+      </div> -->
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="name" formControlName="name" placeholder="Nom de l'unité de mesure">
+          <label mdbLabel class="form-label" for="name">Nom de l'unité de mesure</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="code" formControlName="code" placeholder="Code d'unité de mesure">
+          <label mdbLabel class="form-label" for="code">Code</label>
+        </mdb-form-control>
+      </div>
+      <div class="col-12">
+        <mdb-form-control>
+          <input mdbInput type="text" class="form-control" id="unity" formControlName="unity" placeholder="Unité de valeur">
+          <label mdbLabel class="form-label" for="unity">Unité de valeur</label>
+        </mdb-form-control>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">Enregistrer</button>
+  <button mat-stroked-button mat-dialog-close color="warn" cdkFocusInitial>Annuler</button>
+</mat-dialog-actions>

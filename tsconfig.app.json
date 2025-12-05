@@ -4,7 +4,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": ["node", "jquery", "bootstrap", "file-saver"]
   },
   "files": [
     "src/main.ts"

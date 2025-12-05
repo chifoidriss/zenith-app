@@ -1,0 +1,108 @@
+<app-master title="Mon profil">
+  <div class="card mb-2">
+    <!-- <div class="card-img-top bg-secondary d-flex justify-content-end align-items-end px-3 py-3" style="height: 150px;">
+      <label class="btn btn-light mb-0" for="uploadCover">Changer</label>
+      <input id="uploadCover" class="form-control d-none" type="file">
+    </div> -->
+    <div class="card-body">
+      <div class="d-flex align-items-center">
+        <label class="position-relative me-4" for="uploadAvatar" title="Replace this pic">
+          <!-- Avatar place holder -->
+          <span class="avatar avatar-xl">
+            <img id="uploadAvatar-preview" class="avatar-img rounded-circle border border-white border-3 shadow" [src]="auth.user.avatar || 'assets/img/avatar.svg'" alt="">
+          </span>
+          <!-- Remove btn -->
+          <button type="button" class="uploadremove"><i class="mdi mdi-close text-white"></i></button>
+          <label class="camera-edit" for="uploadAvatar">
+            <i class="mdi mdi-camera-outline"></i>
+          </label>
+        </label>
+
+        <div class="">
+          <p class="mb-1">
+            Personnalisez votre compte à l'aide d'une photo.
+            Votre photo apparaîtra sur les applications qui utilisent votre compte.
+          </p>
+          <!-- <label class="btn btn-primary-soft mb-0" for="uploadAvatar">Changer</label> -->
+          <input id="uploadAvatar" class="form-control d-none" type="file" accept="image/*">
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-between">
+        <div class="flex-fill">
+          <div class="">
+            <label class="form-label">Nom complet <br><b>{{ auth.user.name }}</b></label>
+          </div>
+          <div class="">
+            <label class="form-label">Titre du profil <br><b>{{ auth.user.title }}</b></label>
+          </div>
+        </div>
+        <div class="">
+          <button class="btn btn-sm btn-outline-secondary" (click)="editInformation()">Modifier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-2">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="card-header-title mb-0">Informations du profil</h5>
+        <div class="">
+          <button class="btn btn-sm btn-outline-secondary" (click)="editProfile()">Modifier</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="">
+        <label class="form-label">Sexe <br><b>{{ auth.user.genre == 'M'?'Homme': 'Femme' }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Date de naissance <br><b>{{ auth.user.birthday | date:'dd/MM/YYYY' }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Pays ou région <br><b>{{ auth.user.address?.country.name }}</b></label>
+      </div>
+      <div class="">
+        <label class="form-label">Ville <br><b>{{ auth.user.address?.city }}</b></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-2">
+    <div class="card-header">
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="card-header-title mb-0">Informations du compte</h5>
+        <div class="">
+          <button class="btn btn-sm btn-outline-secondary" (click)="editAccount()">Modifier</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="">
+        <label class="form-label">
+          Nom d'utilisateur <br>
+          <a href="" target="_blank" class="">
+            <!-- {{ APP_URL+'in/' }} -->
+            <b>{{ auth.user.username }}</b>
+          </a>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Adresse Email <br>
+          <b>{{ auth.user.email }}</b>
+        </label>
+      </div>
+      <div class="">
+        <label class="form-label">
+          Numéro de téléphone <br>
+          <b>{{ auth.user.phone }}</b>
+        </label>
+      </div>
+    </div>
+  </div>
+</app-master>
