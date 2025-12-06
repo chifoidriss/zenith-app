@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
-import { APP_NAME, MENU } from '../../../../env';
+import { APP_NAME, Menu, MENU } from '../../../../env';
 import { ConfigService } from '../../services/config.service';
 
 @Component({
@@ -16,12 +16,13 @@ export class HeaderComponent {
   APP_NAME = APP_NAME;
   @Input() links: any[] = [];
 
-  sideLinks = MENU.filter(elt => this.auth.can(elt.permissions));
+  sideLinks: Menu[] = [];
 
   constructor(public auth: AuthService, public config: ConfigService) {}
 
   ngOnInit() {
     this.apps = this.apps.filter(elt => elt.status == true);
+    this.sideLinks = MENU.filter(elt => this.auth.can(elt.permissions));
   }
 
   openMenu() {

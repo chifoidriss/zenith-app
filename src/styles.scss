@@ -1,19 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-// @import '@fortawesome/fontawesome-free/css/all.css';
-// @import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
-
-/* You can add global styles to this file, and also import other style files */
-@import 'scss/general';
-@import 'scss/select';
+@forward "@angular/material/prebuilt-themes/azure-blue.css";
+@forward "@ng-select/ng-select/themes/material.theme.css";
+@forward "libs/mdb-ui-kit/css/mdb.pro.scss";
+@forward "scss/general.scss";
+@forward "scss/select.scss";
 
 
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif !important;
+  font-family: Roboto, sans-serif !important;
   background-color: #EEEC;
   font-size: .875rem !important;
 }

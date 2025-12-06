@@ -57,9 +57,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
-              "@ng-select/ng-select/themes/material.theme.css",
-              "src/libs/mdb-ui-kit/css/mdb.pro.scss",
               "src/styles.scss"
             ],
             "scripts": [

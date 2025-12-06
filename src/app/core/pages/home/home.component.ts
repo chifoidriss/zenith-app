@@ -2,7 +2,7 @@ import { Platform } from '@angular/cdk/platform';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { LoaderService } from '../../../shared/services/loader.service';
-import { APP, APP_NAME, MENU } from '../../../../env';
+import { APP, APP_NAME, Menu, MENU } from '../../../../env';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +13,11 @@ import { APP, APP_NAME, MENU } from '../../../../env';
 export class HomeComponent implements OnInit {
   APP_NAME = APP_NAME;
   apps = APP;
-  menu = MENU.filter(elt => this.auth.can(elt.permissions));
+  menu: Menu[] = [];
   isWeb = true;
   isMobile = true;
 
-  heros = [
+  heroImages = [
     'assets/svg/05.svg',
     'assets/svg/02.svg',
     'assets/svg/04.svg',
@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
     this.loader.start();
     this.isWeb = this.platform.BLINK || this.platform.EDGE || this.platform.FIREFOX || this.platform.SAFARI;
     this.isMobile = this.platform.ANDROID || this.platform.IOS;
+    this.menu = MENU.filter(elt => this.auth.can(elt.permissions));
   }
 
   ngAfterViewInit(): void {

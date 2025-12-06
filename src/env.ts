@@ -1,6 +1,9 @@
 // export const APP_API_BASE_URL = 'https://zenith-api.dev';
+
+import { isDevMode } from "@angular/core";
+
 // export const APP_API_BASE_URL = `http://${location.hostname}:9000`;
-export const APP_API_BASE_URL = getURL();
+export const APP_API_BASE_URL = isDevMode() ? 'http://localhost:9000' : getURL();
 
 
 export const APP_NAME = 'Zénith Hotel';
@@ -313,9 +316,9 @@ export const MENU: Menu[] = [
 export const APP = [];
 
 export function getURL() {
-  if (window.location.hostname.startsWith('localhost')) {
-    return 'https://zenith-api.dev';
-  }
+  // if (window.location.hostname.startsWith('localhost:4200')) {
+  //   return 'https://zenith-api.dev';
+  // }
   // return window.location.protocol + '//' + window.location.hostname + ':9000';
   return window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }

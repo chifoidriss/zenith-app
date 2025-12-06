@@ -1,0 +1,42 @@
+.loader-printer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(#000, .5);
+  z-index: 1000000;
+}
+
+.pdf-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100000000;
+  overflow: auto;
+  display: none;
+
+  .closer {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+
+    &:hover {
+      color: #d30f0b;
+    }
+  }
+
+  &:hover {
+    .closer {
+      display: block;
+    }
+  }
+}

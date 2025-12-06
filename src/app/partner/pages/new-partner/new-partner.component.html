@@ -30,13 +30,13 @@
               <div class="col-md-3 col-sm-6 col-12">
                 <mdb-form-control>
                   <input mdbInput type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="">
-                  <label mdbLabel class="form-label">Nom</label>
+                  <label mdbLabel class="form-label">Nom *</label>
                 </mdb-form-control>
               </div>
               <div class="col-md-3 col-sm-6 col-12">
                 <mdb-form-control>
                   <input mdbInput type="text" class="form-control" id="first_name" formControlName="first_name" placeholder="">
-                  <label mdbLabel class="form-label">Prénom</label>
+                  <label mdbLabel class="form-label">Prénom *</label>
                 </mdb-form-control>
               </div>
               <div class="col-md-3 col-sm-6 col-12" *ngIf="form.get('partner_type')?.value == 'PARTICULAR'">
@@ -127,7 +127,7 @@
               <div class="col-md-3 col-sm-6 col-12">
                 <mdb-form-control>
                   <input mdbInput type="tel" class="form-control" formControlName="phone" placeholder="6__ ___ ___">
-                  <label mdbLabel class="form-label">Numéro téléphone</label>
+                  <label mdbLabel class="form-label">Numéro téléphone *</label>
                 </mdb-form-control>
               </div>
               <div class="col-md-3 col-sm-6 col-12">

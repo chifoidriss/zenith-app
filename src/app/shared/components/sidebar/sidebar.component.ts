@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
-import { MENU } from '../../../../env';
+import { Menu, MENU } from '../../../../env';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,10 +9,14 @@ import { MENU } from '../../../../env';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  @Input() links = MENU.filter(elt => this.auth.can(elt.permissions));
+  @Input() links: Menu[] = [];
   @Input() name: string = '';
 
   constructor(public auth: AuthService) {}
+
+  ngOnInit() {
+    this.links = MENU.filter(elt => this.auth.can(elt.permissions));
+  }
 
   toggleMenu(elt) {
     $('.nav-item.opening').removeClass('opening');
